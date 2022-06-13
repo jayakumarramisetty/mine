@@ -1,57 +1,71 @@
-
-import yaml
+import json
 import io
-import requests
+import yaml
+import json
 
-# Define data
+import importlib.util
+spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
+ipaddress = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(ipaddress)
+
 n=1
 while n<=10:
-    m=10
-    while m<=100:
+    policies = {
+  "Security_policy": [
+    {
+      "name": "netsecpolicy"+str(n),
+      "rules": [],
+      "priority": ""
+    }
+  ]
+}
 
-        data =[ {
-    "Security_policy": [
-        {
-            "name": "tes_scale" + str(n),
-            "rules": [
-                {
-                    "name": "rulename" + str(m),
-                    "description": "rule1_sample",
-                    "proto-ports": [
-                        {
-                            "protocol": "tcp",
-                            "ports": m
-                        }
-                    ],
-                    "action": "permit",
-                    "from-ip-addresses": [
-                        "192.168.0.1"
-                    ],
-                    "to-ip-addresses": [
-                        "192.168.1.1"
-                    ]
-                }
-            ],
-            "priority": ""
-        }
-    ]
-}]
 
-        m=m+1
-        print(data)
-        with io.open(r'/Users/jaikumar/Documents/data.yaml', 'a', encoding='utf8') as outfile:
-            yaml.dump(data, outfile, default_flow_style=False, allow_unicode=True)
+    from_ip = int(ipaddress.IPv4Address("192.168.1.1"))
+    to_ip = int(ipaddress.IPv4Address("193.168.1.1"))
+    rule = {}
+
+
+    for i in range(4):
+        rule["name"] = "rule_{}".format(i)
+        rule["description"] = "rule_description_{}".format(i)
+        rule["action"] = "permit"
+        rule["from-ip-addresses"] = [str(ipaddress.IPv4Address(from_ip + i*256))]
+        rule["to-ip-addresses"] = [str(ipaddress.IPv4Address(to_ip + i*256))]
+        rule["proto-ports"] = [ { "protocol": "tcp", "ports": "443,80" } ]
+        rule1={}
+    
+        rule1.update(rule)
+
+    #print(rule1)
+        
+        policies["Security_policy"][0]["rules"].append(rule1)
+        policy1={}
+        policy1.update(policies)
+    print(json.dumps(policy1))
+    #print(rule)
+    #rule=dict(rule)
+
     n=n+1
-    #print(data)
-    #with io.open(r'/Users/jaikumar/Documents/data.yaml', 'w', encoding='utf8') as outfile:
-        #yaml.dump_all(data, outfile, default_flow_style=False, allow_unicode=True)
 
-# Write YAML file
-#with io.open(r'/Users/jaikumar/Documents/data.yaml', 'w', encoding='utf8') as outfile:
-   # yaml.dump_all(data, outfile, default_flow_style=False, allow_unicode=True)
+    
+    
+    #policies["Security_policy"][0]["rules"].append(rule)
+    
+#policies["Security_policy"][0]["rules"].append(rule1)  
+print(json.dumps(policies))
+print(type(policies))
 
-# Read YAML file
-with open("/Users/jaikumar/Documents/data.yaml", 'r') as stream:
-    data_loaded = yaml.safe_load(stream)
 
-#print(data_loaded)
+#with io.open(r'/Users/jaikumar/Documents/data_1.json', 'w', encoding='utf8') as outfile:
+  #json.dump(policies, outfile)
+
+#with io.open(r'/Users/jaikumar/Documents/data5.yaml', 'w', encoding='utf8') as outfile:
+  #yaml.dump_all(policies, outfile, default_flow_style=False, allow_unicode=True)
+
+with open(r'/Users/jaikumar/Documents/data5.yaml', 'w') as f:
+  yaml.dump(policies, f, default_flow_style=False, sort_keys=False)
+
+
+
+
