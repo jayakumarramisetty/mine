@@ -36,23 +36,13 @@ for n in range(2):
     
         rule1.update(rule)
 
-    #print(rule1)
+
         
         policies["rules"].append(rule1)
         policy1={}
         policy1.update(policies)
-    #print(json.dumps(policy1))
     
     policy4["Security_policy"].append(policy1)
-
-    
-    #with open(r'/Users/jaikumar/Documents/data5.yaml', 'a') as f:
-        #yaml.dump(policy1, f, default_flow_style=False, sort_keys=False)
-    #print(rule)
-    #rule=dict(rule)
-
-    
-
 print(json.dumps(policy4)) 
 
 with open(r'/Users/jaikumar/Documents/data5.yaml', 'a') as f:
