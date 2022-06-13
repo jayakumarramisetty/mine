@@ -9,8 +9,8 @@ ipaddress = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ipaddress)
 
 policy4 = {"Security_policy":[]}
-n=1
-while n<=5:
+
+for n in range(2):
     policies = {
       "name": "netsecpolicy"+str(n),
       "rules": [],
@@ -51,7 +51,7 @@ while n<=5:
     #print(rule)
     #rule=dict(rule)
 
-    n=n+1
+    
 
 print(json.dumps(policy4)) 
 
