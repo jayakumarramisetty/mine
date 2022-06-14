@@ -9,7 +9,7 @@ spec.loader.exec_module(ipaddress)
 #User provided input for both #of rules and #of policies
 x=input("Enter the number of rules you need per policy: \n")
 x=int(x)
-y=input("Enter the number of polocies: \n")
+y=input("Enter the number of policies: \n")
 y=int(y)
 #define main dict
 policy4 = {"Security_policy":[]}
