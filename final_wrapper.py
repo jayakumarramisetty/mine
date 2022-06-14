@@ -3,9 +3,10 @@ import io
 import yaml
 import json
 import importlib.util
-spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
-ipaddress = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(ipaddress)
+import ipaddress
+#spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
+#ipaddress = importlib.util.module_from_spec(spec)
+#spec.loader.exec_module(ipaddress)
 #User provided input for both #of rules and #of policies
 x=input("Enter the number of rules you need per policy: \n")
 x=int(x)
