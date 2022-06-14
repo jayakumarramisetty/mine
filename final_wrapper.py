@@ -50,7 +50,7 @@ for n in range(y):
 #print the required output
 print(json.dumps(policy4)) 
 # Write json to YAML file
-with open(r'/Users/jaikumar/Documents/data_input_rules.yaml', 'w') as f:
+with open(r'data_input_rules.yaml', 'w') as f:
         yaml.dump(policy4, f, default_flow_style=False, sort_keys=False)
 #print the type of output and it is dictionary
 print(type(policy4))
