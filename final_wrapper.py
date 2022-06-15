@@ -1,12 +1,12 @@
 import json
 import io
+from operator import xor
 import yaml
 import json
 import importlib.util
-import ipaddress
-#spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
-#ipaddress = importlib.util.module_from_spec(spec)
-#spec.loader.exec_module(ipaddress)
+spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
+ipaddress = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(ipaddress)
 #User provided input for both #of rules and #of policies
 x=input("Enter the number of rules you need per policy: \n")
 x=int(x)
@@ -31,12 +31,13 @@ for n in range(y):
 
 #2nd loop for the rule body iteration
     for i in range(x):
+        k="permit" if (i%2==0) else "deny"
         rule["name"] = "rule_{}".format(i)
         rule["description"] = "rule_description_{}".format(i)
-        rule["action"] = "permit"
+        rule["action"] = str(k)
         rule["from-ip-addresses"] = [str(ipaddress.IPv4Address(from_ip + i))]
         rule["to-ip-addresses"] = [str(ipaddress.IPv4Address(to_ip + i))]
-        rule["proto-ports"] = [ { "protocol": "tcp", "ports": "443,80" } ]
+        rule["proto-ports"] = [ { "protocol": "tcp", "ports": str(int(1024+i)) } ]
         #define the rule dictionary
         rule1={}
         rule1.update(rule)
