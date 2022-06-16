@@ -3,6 +3,7 @@ import io
 from operator import xor
 import yaml
 import json
+import random
 import importlib.util
 import ipaddress
 #spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
@@ -31,7 +32,7 @@ for n in range(y):
     rule = {}
 
 #2nd loop for the rule body iteration
-for i in range(x):
+    for i in range(x):
         #k="permit" if (i%2==0) else "deny"
         act_list=["permit", "deny"]
         rule["name"] = "rule_{}".format(i)
