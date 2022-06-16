@@ -31,14 +31,15 @@ for n in range(y):
     rule = {}
 
 #2nd loop for the rule body iteration
-    for i in range(x):
-        k="permit" if (i%2==0) else "deny"
+for i in range(x):
+        #k="permit" if (i%2==0) else "deny"
+        act_list=["permit", "deny"]
         rule["name"] = "rule_{}".format(i)
         rule["description"] = "rule_description_{}".format(i)
-        rule["action"] = str(k)
+        rule["action"] = str(random.choice(act_list))
         rule["from-ip-addresses"] = [str(ipaddress.IPv4Address(from_ip + i))]
         rule["to-ip-addresses"] = [str(ipaddress.IPv4Address(to_ip + i))]
-        rule["proto-ports"] = [ { "protocol": "tcp", "ports": str(int(1024+i)) } ]
+        rule["proto-ports"] = [ { "protocol": "tcp", "ports": str(random.randint(1024,65530)) } ]
         #define the rule dictionary
         rule1={}
         rule1.update(rule)
