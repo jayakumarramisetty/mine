@@ -9,17 +9,19 @@ import ipaddress
 #spec = importlib.util.spec_from_file_location("module.name", "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/ipaddress.py")
 #ipaddress = importlib.util.module_from_spec(spec)
 #spec.loader.exec_module(ipaddress)
-#User provided input for both #of rules and #of policies
+#User provided input for both #of rules and #of policies and name
 x=input("Enter the number of rules you need per policy: \n")
 x=int(x)
 y=input("Enter the number of policies: \n")
 y=int(y)
+z=input("Enter the name string of the policy: \n")
+z=str(z)
 #define main dict
 policy4 = {"Security_policy":[]}
 #1st loop start for security policy body iteration
 for n in range(y):
     policies = {
-      "name": "netsecpolicy"+str(n),
+      "name": str(z)+str(n),
       "rules": [],
       "priority": ""
     }
@@ -59,11 +61,3 @@ with open(r'data_input_rules.yaml', 'w') as f:
         yaml.dump(policy4, f, default_flow_style=False, sort_keys=False)
 #print the type of output and it is dictionary
 print(type(policy4))
-
-
-
-
-
-
-
-
