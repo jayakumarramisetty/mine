@@ -42,7 +42,7 @@ for n in range(y):
         rule["action"] = str(random.choice(act_list))
         rule["from-ip-addresses"] = [str(ipaddress.IPv4Address(from_ip + i))]
         rule["to-ip-addresses"] = [str(ipaddress.IPv4Address(to_ip + i))]
-        rule["proto-ports"] = [ { "protocol": "tcp", "ports": str(random.randint(1024,65530)) } ]
+        rule["proto-ports"] = [ { "protocol": "tcp", "ports": str(random.randint(10,256)) } ]
         #define the rule dictionary
         rule1={}
         rule1.update(rule)
