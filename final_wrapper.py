@@ -16,7 +16,7 @@ y=input("Enter the number of policies: \n")
 y=int(y)
 z=input("Enter the name string of the policy: \n")
 z=str(z)
-#define main dict
+#define main dictionary
 policy4 = {"Security_policy":[]}
 #1st loop start for security policy body iteration
 for n in range(y):
@@ -25,7 +25,7 @@ for n in range(y):
       "rules": [],
       "priority": ""
     }
-  
+
 #define the IP address for iteration
     sip="10."+str(n)+"."+"0."+"1"
     dip="11."+str(n)+"."+"0."+"1"
