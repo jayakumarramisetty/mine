@@ -61,3 +61,5 @@ with open(r'data_input_rules.yaml', 'w') as f:
         yaml.dump(policy4, f, default_flow_style=False, sort_keys=False)
 #print the type of output and it is dictionary
 print(type(policy4))
+
+
