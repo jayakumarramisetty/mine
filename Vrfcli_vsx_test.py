@@ -84,6 +84,284 @@ def parse_flows(flows):
             others_count += 1
     return (tcp_count, udp_count, icmp_count, others_count)
 
+
+class vrf_config_change_standalone(aetest.Testcase):
+
+        @aetest.test
+        def iperf_server_start(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
+            "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
+            "ping 10.29.21.71 > ping_log.log & ", "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+            
+
+
+        
+
+        time.sleep(20)
+
+        @aetest.test
+        def iperf_client_start(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
+            "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+
+
+
+        @aetest.test
+        def get_elba_pretest_flow_output_elba1(self):
+            router_ip = ["192.168.68.128"]
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            for ip in router_ip:
+                ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
+                ssh.send_command("diag", expect_string="#")
+                ssh.send_command("diag dsm console 1/1", expect_string="$")
+                cli_output_flow = ssh.send_command("pdsctl show flow")
+                print(cli_output_flow)
+                ssh.disconnect()
+        @aetest.test
+        def get_elba_pretest_flow_output_elba2(self):
+            router_ip = ["192.168.68.128"]
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            for ip in router_ip:
+                ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
+                ssh.send_command("diag", expect_string="#")
+                ssh.send_command("diag dsm console 1/2", expect_string="$")
+                cli_output_flow = ssh.send_command("pdsctl show flow")
+                print(cli_output_flow)
+                ssh.disconnect()
+  
+  
+        @aetest.test 
+        def vrf_config_change_standalone(self):
+           router_ip = "192.168.68.128"
+           r_username = "admin"
+           r_password = "Pensando!2345"
+           ssh = netmiko.ConnectHandler(
+               **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
+           cli_output1 = ssh.send_command("show dsm 1/1 vrf")
+           cli_output2 = ssh.send_command("show dsm 1/2 vrf")
+           print(cli_output1)
+           print(cli_output2)
+           test_vrf1 = re.search("VRFs.*", cli_output1)
+           test_vrf2 = re.search("VRFs.*", cli_output2)
+           if test_vrf1:
+               vrfs_temp = test_vrf1.group()
+               vrf1 = vrf_list(vrfs_temp)
+               print(vrf1)
+               if "pod1" in vrf1:
+                       ssh.send_command("diag", expect_string="#")
+                       ssh.send_command("diag dsm console 1/1", expect_string="$")
+                       cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
+                       tcp_count_pre, udp_count_pre, icmp_count_pre, others_count_pre = parse_flows(cli_output_flow_pre_change)
+                       ssh.send_command("exit",expect_string="$")
+                       print("VRF pod1 mapped to DSM1, changing to DSM2")
+                       config_change_vrf_primary("pod1", "1/2")
+                       time.sleep(60)
+                       ssh.send_command("diag", expect_string="#")
+                       ssh.send_command("diag dsm console 1/2", expect_string="$")
+                       cli_output_flow_post_change = ssh.send_command("pdsctl show flow")
+                       tcp_count_post, udp_count_post, icmp_count_post, others_count_post = parse_flows(cli_output_flow_post_change)
+                       ssh.send_command("exit",expect_string="$")
+           if test_vrf2:
+               vrfs_temp = test_vrf2.group()
+               vrf1 = vrf_list(vrfs_temp)
+               print(vrf1)
+               if "pod1" in vrf1:
+                       ssh.send_command("diag", expect_string="#")
+                       ssh.send_command("diag dsm console 1/2", expect_string="$")
+                       cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
+                       tcp_count_pre, udp_count_pre, icmp_count_pre, others_count_pre = parse_flows(cli_output_flow_pre_change)
+                       ssh.send_command("exit",expect_string="$")
+                       print("VRF pod1 mapped to DSM2, changing to DSM1")
+                       config_change_vrf_primary("pod1", "1/1")
+                       time.sleep(60)
+                       ssh.send_command("diag", expect_string="#")
+                       ssh.send_command("diag dsm console 1/1", expect_string="$")
+                       cli_output_flow_post_change = ssh.send_command("pdsctl show flow")
+                       tcp_count_post, udp_count_post, icmp_count_post, others_count_post = parse_flows(cli_output_flow_post_change)
+                       ssh.send_command("exit",expect_string="$")
+           
+           else:
+               print("No vrfs configured")
+           
+           assert udp_count_pre == udp_count_post, print("UDP flows count not matching : \n Pre: " + udp_count_pre + "\n Post: " + udp_count_post)
+           assert icmp_count_pre == icmp_count_post, print("ICMP flows count not matching : \n Pre: " + icmp_count_pre + "\n Post: " + icmp_count_post)
+           assert others_count_pre == others_count_post, print("Other flows count not matching : \n Pre: " + others_count_pre + "\n Post: " + others_count_post)
+           print("FLows in vrf pod1 match before and after change to DSM mapping")
+           print("UDP flows count : \n Pre: "+str(udp_count_pre)+ "\n Post: " + str(udp_count_post))
+           print("ICMP flows count  : \n Pre: " + str(icmp_count_pre) + "\n Post: " + str(icmp_count_post))
+           print("Other flows count  : \n Pre: " + str(others_count_pre) + "\n Post: " + str(others_count_post))
+           ssh.disconnect()
+
+
+        @aetest.test
+        def get_elba_posttest_flow_output_elba1(self):
+            router_ip = ["192.168.68.128"]
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            for ip in router_ip:
+                ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
+                ssh.send_command("diag", expect_string="#")
+                ssh.send_command("diag dsm console 1/1", expect_string="$")
+                cli_output_flow = ssh.send_command("pdsctl show flow")
+                print(cli_output_flow)
+                ssh.disconnect()
+        @aetest.test
+        def get_elba_posttest_flow_output_elba2(self):
+            router_ip = ["192.168.68.128"]
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            for ip in router_ip:
+                ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
+                ssh.send_command("diag", expect_string="#")
+                ssh.send_command("diag dsm console 1/2", expect_string="$")
+                cli_output_flow = ssh.send_command("pdsctl show flow")
+                print(cli_output_flow)
+                ssh.disconnect()
+
+        @aetest.test
+        def get_show_output(self):
+            router_ip = ["192.168.68.128"]
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            for ip in router_ip:
+                ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
+           
+                cli_output1 = ssh.send_command("show dsm 1/1 vrf")
+                cli_output2 = ssh.send_command("show dsm 1/2 vrf")
+                cli1 = ssh.send_command("show run vsx")
+
+                print(cli_output1)
+                print(cli_output2)
+                print(cli1)
+                ssh.disconnect()
+
+        @aetest.test
+        def iperf_client_stop(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["killall iperf" , "pkill -9 iperf",
+            "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+        @aetest.test
+        def iperf_server_stop(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["killall iperf", "pkill -9 iperf",
+            "killall ping", 
+            "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+
+            print("=>"*100)
+            print("waiting for 100 sec timeout")
+            time.sleep(100)
+            print("=>"*100)
+
+class verify_vsx_oper_status(aetest.Testcase):
+
+
+        must_pass=True
+
+        @aetest.test 
+        def vrf_status_verify(self):
+            router_ip = "192.168.68.128"
+            r_username = "admin"
+            r_password = "Pensando!2345"
+            ssh = netmiko.ConnectHandler(
+    **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
+            cli_output1 = ssh.send_command("show vsx status | i VSX")
+            re_vsx= re.search("VSX.*", cli_output1)
+            vsx = re_vsx.group()
+            assert vsx == "VSX Operational State"
+            print("=>"*500 , "VSX configured , executing VSX_sync test case", "=>"*500)
+
+            #else:
+                #sys.exit("VSX not configured, executing standalone test case")
+            ssh.disconnect()
+
 class vrf_clitest_vsx_withsync(aetest.Testcase):
 
 
@@ -291,7 +569,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands1 = ["killall iperf" ,
+            commands1 = ["killall iperf" ,"pkill -9 iperf",
             "ps -aux | grep iperf"]
 
             iperf_client= paramiko.SSHClient()
@@ -319,7 +597,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands = ["killall iperf", 
+            commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
             "ps -aux | grep iperf"]
 
@@ -339,10 +617,10 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                 if err:
                     print(err)
 
-print("=>"*100)
-print("waiting for 100 sec timeout")
-time.sleep(100)
-print("=>"*100)
+            print("=>"*100)
+            print("waiting for 100 sec timeout")
+            time.sleep(100)
+            print("=>"*100)
 
 class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
@@ -546,7 +824,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands1 = ["killall iperf" ,
+            commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
 
             iperf_client= paramiko.SSHClient()
@@ -574,7 +852,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands = ["killall iperf", 
+            commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
             "ps -aux | grep iperf"]
 
@@ -593,10 +871,10 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                 err = stderr.read().decode()
                 if err:
                     print(err)
-print("=>"*100)
-print("waiting for 100 sec timeout")
-time.sleep(100)
-print("=>"*100)
+            print("=>"*100)
+            print("waiting for 100 sec timeout")
+            time.sleep(100)
+            print("=>"*100)
 
 class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
@@ -799,7 +1077,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands1 = ["killall iperf" ,
+            commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
 
             iperf_client= paramiko.SSHClient()
@@ -827,7 +1105,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
             username = 'root'
             passwd = 'docker'
 
-            commands = ["killall iperf", 
+            commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
             "ps -aux | grep iperf"]
 
