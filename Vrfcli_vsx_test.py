@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 import os
 import time
+import paramiko
 import logging
 from ats import aetest
 sys.path.append(os.environ['PEN_SYSTEST'])
@@ -84,6 +85,70 @@ def parse_flows(flows):
     return (tcp_count, udp_count, icmp_count, others_count)
 
 class vrf_clitest_vsx_withsync(aetest.Testcase):
+
+
+        @aetest.test
+        def iperf_server_start(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
+            "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
+            "ping 10.29.21.71 > ping_log.log & ", "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+            
+
+
+        
+
+        time.sleep(20)
+
+        @aetest.test
+        def iperf_client_start(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
+            "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+
+
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
@@ -220,7 +285,124 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                 print(cli1)
                 ssh.disconnect()
 
+        @aetest.test
+        def iperf_client_stop(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["killall iperf" ,
+            "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+        @aetest.test
+        def iperf_server_stop(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["killall iperf", 
+            "killall ping", 
+            "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+
+print("=>"*100)
+print("waiting for 100 sec timeout")
+time.sleep(100)
+print("=>"*100)
+
 class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
+
+
+        @aetest.test
+        def iperf_server_start(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
+            "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
+            "ping 10.29.21.71 > ping_log.log & ", "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+            
+
+
+        
+
+        time.sleep(20)
+
+        @aetest.test
+        def iperf_client_start(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
+            "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
@@ -358,7 +540,123 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                 print(cli1)
                 ssh.disconnect()
 
+        @aetest.test
+        def iperf_client_stop(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["killall iperf" ,
+            "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+        @aetest.test
+        def iperf_server_stop(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["killall iperf", 
+            "killall ping", 
+            "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+print("=>"*100)
+print("waiting for 100 sec timeout")
+time.sleep(100)
+print("=>"*100)
+
 class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
+
+
+        @aetest.test
+        def iperf_server_start(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
+            "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
+            "ping 10.29.21.71 > ping_log.log & ", "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+            
+
+
+        
+
+        time.sleep(20)
+
+        @aetest.test
+        def iperf_client_start(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
+            "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
@@ -494,3 +792,57 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                 print(cli_output2)
                 print(cli1)
                 ssh.disconnect()
+
+        @aetest.test
+        def iperf_client_stop(self):
+            host_ip = '192.168.70.178'
+            username = 'root'
+            passwd = 'docker'
+
+            commands1 = ["killall iperf" ,
+            "ps -aux | grep iperf"]
+
+            iperf_client= paramiko.SSHClient()
+            iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands1:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_client.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
+    
+
+
+
+        @aetest.test
+        def iperf_server_stop(self):
+            host_ip = '192.168.70.223'
+            username = 'root'
+            passwd = 'docker'
+
+            commands = ["killall iperf", 
+            "killall ping", 
+            "ps -aux | grep iperf"]
+
+            iperf_server= paramiko.SSHClient()
+            iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+            except:
+                print("[!] Cannot connect to the iperf Server")
+                exit()
+
+            for command in commands:
+                print("=>"*50, command)
+                stdin, stdout, stderr = iperf_server.exec_command(command)
+                print(stdout.read().decode())
+                err = stderr.read().decode()
+                if err:
+                    print(err)
