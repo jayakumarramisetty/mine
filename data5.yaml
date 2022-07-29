@@ -1,0 +1,1004 @@
+Security_policy:
+- name: netsec1
+  rules:
+  - name: rule_0
+    description: rule_description_0
+    action: permit
+    from-ip-addresses:
+    - 192.1.1.1
+    to-ip-addresses:
+    - 193.1.1.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_1
+    description: rule_description_1
+    action: permit
+    from-ip-addresses:
+    - 192.1.2.1
+    to-ip-addresses:
+    - 193.1.2.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_2
+    description: rule_description_2
+    action: permit
+    from-ip-addresses:
+    - 192.1.3.1
+    to-ip-addresses:
+    - 193.1.3.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_3
+    description: rule_description_3
+    action: permit
+    from-ip-addresses:
+    - 192.1.4.1
+    to-ip-addresses:
+    - 193.1.4.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_4
+    description: rule_description_4
+    action: permit
+    from-ip-addresses:
+    - 192.1.5.1
+    to-ip-addresses:
+    - 193.1.5.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_5
+    description: rule_description_5
+    action: permit
+    from-ip-addresses:
+    - 192.1.6.1
+    to-ip-addresses:
+    - 193.1.6.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_6
+    description: rule_description_6
+    action: permit
+    from-ip-addresses:
+    - 192.1.7.1
+    to-ip-addresses:
+    - 193.1.7.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_7
+    description: rule_description_7
+    action: permit
+    from-ip-addresses:
+    - 192.1.8.1
+    to-ip-addresses:
+    - 193.1.8.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_8
+    description: rule_description_8
+    action: permit
+    from-ip-addresses:
+    - 192.1.9.1
+    to-ip-addresses:
+    - 193.1.9.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_9
+    description: rule_description_9
+    action: permit
+    from-ip-addresses:
+    - 192.1.10.1
+    to-ip-addresses:
+    - 193.1.10.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_10
+    description: rule_description_10
+    action: permit
+    from-ip-addresses:
+    - 192.1.11.1
+    to-ip-addresses:
+    - 193.1.11.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_11
+    description: rule_description_11
+    action: permit
+    from-ip-addresses:
+    - 192.1.12.1
+    to-ip-addresses:
+    - 193.1.12.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_12
+    description: rule_description_12
+    action: permit
+    from-ip-addresses:
+    - 192.1.13.1
+    to-ip-addresses:
+    - 193.1.13.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_13
+    description: rule_description_13
+    action: permit
+    from-ip-addresses:
+    - 192.1.14.1
+    to-ip-addresses:
+    - 193.1.14.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_14
+    description: rule_description_14
+    action: permit
+    from-ip-addresses:
+    - 192.1.15.1
+    to-ip-addresses:
+    - 193.1.15.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_15
+    description: rule_description_15
+    action: permit
+    from-ip-addresses:
+    - 192.1.16.1
+    to-ip-addresses:
+    - 193.1.16.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_16
+    description: rule_description_16
+    action: permit
+    from-ip-addresses:
+    - 192.1.17.1
+    to-ip-addresses:
+    - 193.1.17.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_17
+    description: rule_description_17
+    action: permit
+    from-ip-addresses:
+    - 192.1.18.1
+    to-ip-addresses:
+    - 193.1.18.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_18
+    description: rule_description_18
+    action: permit
+    from-ip-addresses:
+    - 192.1.19.1
+    to-ip-addresses:
+    - 193.1.19.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_19
+    description: rule_description_19
+    action: permit
+    from-ip-addresses:
+    - 192.1.20.1
+    to-ip-addresses:
+    - 193.1.20.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_20
+    description: rule_description_20
+    action: permit
+    from-ip-addresses:
+    - 192.1.21.1
+    to-ip-addresses:
+    - 193.1.21.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_21
+    description: rule_description_21
+    action: permit
+    from-ip-addresses:
+    - 192.1.22.1
+    to-ip-addresses:
+    - 193.1.22.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_22
+    description: rule_description_22
+    action: permit
+    from-ip-addresses:
+    - 192.1.23.1
+    to-ip-addresses:
+    - 193.1.23.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_23
+    description: rule_description_23
+    action: permit
+    from-ip-addresses:
+    - 192.1.24.1
+    to-ip-addresses:
+    - 193.1.24.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_24
+    description: rule_description_24
+    action: permit
+    from-ip-addresses:
+    - 192.1.25.1
+    to-ip-addresses:
+    - 193.1.25.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_25
+    description: rule_description_25
+    action: permit
+    from-ip-addresses:
+    - 192.1.26.1
+    to-ip-addresses:
+    - 193.1.26.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_26
+    description: rule_description_26
+    action: permit
+    from-ip-addresses:
+    - 192.1.27.1
+    to-ip-addresses:
+    - 193.1.27.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_27
+    description: rule_description_27
+    action: permit
+    from-ip-addresses:
+    - 192.1.28.1
+    to-ip-addresses:
+    - 193.1.28.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_28
+    description: rule_description_28
+    action: permit
+    from-ip-addresses:
+    - 192.1.29.1
+    to-ip-addresses:
+    - 193.1.29.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_29
+    description: rule_description_29
+    action: permit
+    from-ip-addresses:
+    - 192.1.30.1
+    to-ip-addresses:
+    - 193.1.30.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_30
+    description: rule_description_30
+    action: permit
+    from-ip-addresses:
+    - 192.1.31.1
+    to-ip-addresses:
+    - 193.1.31.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_31
+    description: rule_description_31
+    action: permit
+    from-ip-addresses:
+    - 192.1.32.1
+    to-ip-addresses:
+    - 193.1.32.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_32
+    description: rule_description_32
+    action: permit
+    from-ip-addresses:
+    - 192.1.33.1
+    to-ip-addresses:
+    - 193.1.33.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_33
+    description: rule_description_33
+    action: permit
+    from-ip-addresses:
+    - 192.1.34.1
+    to-ip-addresses:
+    - 193.1.34.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_34
+    description: rule_description_34
+    action: permit
+    from-ip-addresses:
+    - 192.1.35.1
+    to-ip-addresses:
+    - 193.1.35.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_35
+    description: rule_description_35
+    action: permit
+    from-ip-addresses:
+    - 192.1.36.1
+    to-ip-addresses:
+    - 193.1.36.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_36
+    description: rule_description_36
+    action: permit
+    from-ip-addresses:
+    - 192.1.37.1
+    to-ip-addresses:
+    - 193.1.37.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_37
+    description: rule_description_37
+    action: permit
+    from-ip-addresses:
+    - 192.1.38.1
+    to-ip-addresses:
+    - 193.1.38.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_38
+    description: rule_description_38
+    action: permit
+    from-ip-addresses:
+    - 192.1.39.1
+    to-ip-addresses:
+    - 193.1.39.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_39
+    description: rule_description_39
+    action: permit
+    from-ip-addresses:
+    - 192.1.40.1
+    to-ip-addresses:
+    - 193.1.40.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_40
+    description: rule_description_40
+    action: permit
+    from-ip-addresses:
+    - 192.1.41.1
+    to-ip-addresses:
+    - 193.1.41.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_41
+    description: rule_description_41
+    action: permit
+    from-ip-addresses:
+    - 192.1.42.1
+    to-ip-addresses:
+    - 193.1.42.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_42
+    description: rule_description_42
+    action: permit
+    from-ip-addresses:
+    - 192.1.43.1
+    to-ip-addresses:
+    - 193.1.43.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_43
+    description: rule_description_43
+    action: permit
+    from-ip-addresses:
+    - 192.1.44.1
+    to-ip-addresses:
+    - 193.1.44.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_44
+    description: rule_description_44
+    action: permit
+    from-ip-addresses:
+    - 192.1.45.1
+    to-ip-addresses:
+    - 193.1.45.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_45
+    description: rule_description_45
+    action: permit
+    from-ip-addresses:
+    - 192.1.46.1
+    to-ip-addresses:
+    - 193.1.46.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_46
+    description: rule_description_46
+    action: permit
+    from-ip-addresses:
+    - 192.1.47.1
+    to-ip-addresses:
+    - 193.1.47.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_47
+    description: rule_description_47
+    action: permit
+    from-ip-addresses:
+    - 192.1.48.1
+    to-ip-addresses:
+    - 193.1.48.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_48
+    description: rule_description_48
+    action: permit
+    from-ip-addresses:
+    - 192.1.49.1
+    to-ip-addresses:
+    - 193.1.49.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_49
+    description: rule_description_49
+    action: permit
+    from-ip-addresses:
+    - 192.1.50.1
+    to-ip-addresses:
+    - 193.1.50.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_50
+    description: rule_description_50
+    action: permit
+    from-ip-addresses:
+    - 192.1.51.1
+    to-ip-addresses:
+    - 193.1.51.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_51
+    description: rule_description_51
+    action: permit
+    from-ip-addresses:
+    - 192.1.52.1
+    to-ip-addresses:
+    - 193.1.52.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_52
+    description: rule_description_52
+    action: permit
+    from-ip-addresses:
+    - 192.1.53.1
+    to-ip-addresses:
+    - 193.1.53.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_53
+    description: rule_description_53
+    action: permit
+    from-ip-addresses:
+    - 192.1.54.1
+    to-ip-addresses:
+    - 193.1.54.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_54
+    description: rule_description_54
+    action: permit
+    from-ip-addresses:
+    - 192.1.55.1
+    to-ip-addresses:
+    - 193.1.55.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_55
+    description: rule_description_55
+    action: permit
+    from-ip-addresses:
+    - 192.1.56.1
+    to-ip-addresses:
+    - 193.1.56.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_56
+    description: rule_description_56
+    action: permit
+    from-ip-addresses:
+    - 192.1.57.1
+    to-ip-addresses:
+    - 193.1.57.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_57
+    description: rule_description_57
+    action: permit
+    from-ip-addresses:
+    - 192.1.58.1
+    to-ip-addresses:
+    - 193.1.58.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_58
+    description: rule_description_58
+    action: permit
+    from-ip-addresses:
+    - 192.1.59.1
+    to-ip-addresses:
+    - 193.1.59.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_59
+    description: rule_description_59
+    action: permit
+    from-ip-addresses:
+    - 192.1.60.1
+    to-ip-addresses:
+    - 193.1.60.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_60
+    description: rule_description_60
+    action: permit
+    from-ip-addresses:
+    - 192.1.61.1
+    to-ip-addresses:
+    - 193.1.61.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_61
+    description: rule_description_61
+    action: permit
+    from-ip-addresses:
+    - 192.1.62.1
+    to-ip-addresses:
+    - 193.1.62.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_62
+    description: rule_description_62
+    action: permit
+    from-ip-addresses:
+    - 192.1.63.1
+    to-ip-addresses:
+    - 193.1.63.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_63
+    description: rule_description_63
+    action: permit
+    from-ip-addresses:
+    - 192.1.64.1
+    to-ip-addresses:
+    - 193.1.64.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_64
+    description: rule_description_64
+    action: permit
+    from-ip-addresses:
+    - 192.1.65.1
+    to-ip-addresses:
+    - 193.1.65.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_65
+    description: rule_description_65
+    action: permit
+    from-ip-addresses:
+    - 192.1.66.1
+    to-ip-addresses:
+    - 193.1.66.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_66
+    description: rule_description_66
+    action: permit
+    from-ip-addresses:
+    - 192.1.67.1
+    to-ip-addresses:
+    - 193.1.67.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_67
+    description: rule_description_67
+    action: permit
+    from-ip-addresses:
+    - 192.1.68.1
+    to-ip-addresses:
+    - 193.1.68.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_68
+    description: rule_description_68
+    action: permit
+    from-ip-addresses:
+    - 192.1.69.1
+    to-ip-addresses:
+    - 193.1.69.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_69
+    description: rule_description_69
+    action: permit
+    from-ip-addresses:
+    - 192.1.70.1
+    to-ip-addresses:
+    - 193.1.70.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_70
+    description: rule_description_70
+    action: permit
+    from-ip-addresses:
+    - 192.1.71.1
+    to-ip-addresses:
+    - 193.1.71.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_71
+    description: rule_description_71
+    action: permit
+    from-ip-addresses:
+    - 192.1.72.1
+    to-ip-addresses:
+    - 193.1.72.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_72
+    description: rule_description_72
+    action: permit
+    from-ip-addresses:
+    - 192.1.73.1
+    to-ip-addresses:
+    - 193.1.73.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_73
+    description: rule_description_73
+    action: permit
+    from-ip-addresses:
+    - 192.1.74.1
+    to-ip-addresses:
+    - 193.1.74.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_74
+    description: rule_description_74
+    action: permit
+    from-ip-addresses:
+    - 192.1.75.1
+    to-ip-addresses:
+    - 193.1.75.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_75
+    description: rule_description_75
+    action: permit
+    from-ip-addresses:
+    - 192.1.76.1
+    to-ip-addresses:
+    - 193.1.76.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_76
+    description: rule_description_76
+    action: permit
+    from-ip-addresses:
+    - 192.1.77.1
+    to-ip-addresses:
+    - 193.1.77.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_77
+    description: rule_description_77
+    action: permit
+    from-ip-addresses:
+    - 192.1.78.1
+    to-ip-addresses:
+    - 193.1.78.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_78
+    description: rule_description_78
+    action: permit
+    from-ip-addresses:
+    - 192.1.79.1
+    to-ip-addresses:
+    - 193.1.79.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_79
+    description: rule_description_79
+    action: permit
+    from-ip-addresses:
+    - 192.1.80.1
+    to-ip-addresses:
+    - 193.1.80.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_80
+    description: rule_description_80
+    action: permit
+    from-ip-addresses:
+    - 192.1.81.1
+    to-ip-addresses:
+    - 193.1.81.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_81
+    description: rule_description_81
+    action: permit
+    from-ip-addresses:
+    - 192.1.82.1
+    to-ip-addresses:
+    - 193.1.82.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_82
+    description: rule_description_82
+    action: permit
+    from-ip-addresses:
+    - 192.1.83.1
+    to-ip-addresses:
+    - 193.1.83.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_83
+    description: rule_description_83
+    action: permit
+    from-ip-addresses:
+    - 192.1.84.1
+    to-ip-addresses:
+    - 193.1.84.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_84
+    description: rule_description_84
+    action: permit
+    from-ip-addresses:
+    - 192.1.85.1
+    to-ip-addresses:
+    - 193.1.85.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_85
+    description: rule_description_85
+    action: permit
+    from-ip-addresses:
+    - 192.1.86.1
+    to-ip-addresses:
+    - 193.1.86.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_86
+    description: rule_description_86
+    action: permit
+    from-ip-addresses:
+    - 192.1.87.1
+    to-ip-addresses:
+    - 193.1.87.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_87
+    description: rule_description_87
+    action: permit
+    from-ip-addresses:
+    - 192.1.88.1
+    to-ip-addresses:
+    - 193.1.88.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_88
+    description: rule_description_88
+    action: permit
+    from-ip-addresses:
+    - 192.1.89.1
+    to-ip-addresses:
+    - 193.1.89.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_89
+    description: rule_description_89
+    action: permit
+    from-ip-addresses:
+    - 192.1.90.1
+    to-ip-addresses:
+    - 193.1.90.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_90
+    description: rule_description_90
+    action: permit
+    from-ip-addresses:
+    - 192.1.91.1
+    to-ip-addresses:
+    - 193.1.91.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_91
+    description: rule_description_91
+    action: permit
+    from-ip-addresses:
+    - 192.1.92.1
+    to-ip-addresses:
+    - 193.1.92.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_92
+    description: rule_description_92
+    action: permit
+    from-ip-addresses:
+    - 192.1.93.1
+    to-ip-addresses:
+    - 193.1.93.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_93
+    description: rule_description_93
+    action: permit
+    from-ip-addresses:
+    - 192.1.94.1
+    to-ip-addresses:
+    - 193.1.94.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_94
+    description: rule_description_94
+    action: permit
+    from-ip-addresses:
+    - 192.1.95.1
+    to-ip-addresses:
+    - 193.1.95.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_95
+    description: rule_description_95
+    action: permit
+    from-ip-addresses:
+    - 192.1.96.1
+    to-ip-addresses:
+    - 193.1.96.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_96
+    description: rule_description_96
+    action: permit
+    from-ip-addresses:
+    - 192.1.97.1
+    to-ip-addresses:
+    - 193.1.97.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_97
+    description: rule_description_97
+    action: permit
+    from-ip-addresses:
+    - 192.1.98.1
+    to-ip-addresses:
+    - 193.1.98.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_98
+    description: rule_description_98
+    action: permit
+    from-ip-addresses:
+    - 192.1.99.1
+    to-ip-addresses:
+    - 193.1.99.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  - name: rule_99
+    description: rule_description_99
+    action: permit
+    from-ip-addresses:
+    - 192.1.100.1
+    to-ip-addresses:
+    - 193.1.100.1
+    proto-ports:
+    - protocol: tcp
+      ports: 443,80
+  priority: ''

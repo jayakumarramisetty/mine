@@ -1,0 +1,126 @@
+
+
+
+Local 2 local switching:
+
+1.Egress policy eval(src)Tx
+2.For now we are not changing anything.
+3.No eval on dest because of same vlan.
+
+Local 2 remote switching:
+
+Asymetry in bridging
+1. egress tx eval on dss1
+2.ingress rx eval on dss2
+
+
+Future:
+
+1.No future thoughts as of now.
+
+
+routiung:
+
+L2l
+
+1subnet 1 tx eval
+2.subnet 2 rx eval
+
+l2r
+subnet 1 tx eval
+subnet 2 rx eval
+
+To apply policies at VPC level, navigate to  System → Tenants → VRF in the PSM GUI, and click on ADD VRF
+Ingress Security Policy choose a previously configured security policy.
+Egress Security Policy choose a previously configured security policy.
+If CPS for this VLAN has to be configured outside default values, toggle the  Show CPS/Sessions selector.
+Maximum CPS per DSE, which can be upto the maximum supported Connections Per Second for the entire system.
+Maximum Sessions per DSE, which can be upto the maximum supported Sessions for the entire s
+EventModuleFailed    = "MODULE_FAILED"
+EventRebootRequested = "DISTRIBUTED_SERVICES_REBOOT_REQUEST"
+
+
+
+	N0isystem$
+
+
+	P
+
+
+
+sudo ip tunnel add gre1 mode gre remote 10.29.31.33 local 10.29.31.20 ttl 255
+sudo ip link set gre1 up
+sudo ip addr add 10.11.10.1/24 dev gre1
+
+
+sudo ip tunnel add gre1 mode gre remote 10.29.31.20 local 10.29.31.33 ttl 255
+sudo ip link set gre1 up
+sudo ip addr add 10.11.10.2/24 dev gre1
+
+
+Have VRF Pinning configured on both the VSX Peers and vsx sync dsm as well
+Have flows and verify the flow sync is proper
+Now unpin on Primary and do a reload . VSX secondary is not touched at all
+
+
+CX10K-Support-1# show dsm redirect 
+Distributed Services Modules 1/1
+====================================
+VLANs: 41
+
+Distributed Services Modules 1/2
+====================================
+VLANs: 21,31
+
+
+CX10K-Support-2# show dsm redirect 
+Distributed Services Modules 1/1
+====================================
+VLANs: 31,41
+
+Distributed Services Modules 1/2
+====================================
+VLANs: 21
+
+
+after the reload of the primar switch the config sync is happening but the rediection filters are out of sync as  above
+
+CX10K-Support-1# show version 
+-----------------------------------------------------------------------------
+ArubaOS-CX
+(c) Copyright 2017-2022 Hewlett Packard Enterprise Development LP
+-----------------------------------------------------------------------------
+Version      : DL.XX.XX.XXXX                                                 
+Build Date   : 2022-04-16 21:22:42 UTC                                       
+Build ID     : ArubaOS-CX:DL.XX.XX.XXXX:e61357d3d4b5:202204162114            
+Build SHA    : e61357d3d4b532eca7cacdf6bb41e44661b69117                      
+Active Image : primary                       
+
+Service OS Version : DL.01.X1.0004-internal        
+BIOS Version       : DL-01-0004      
+
+CX10K-Support-2# show version 
+-----------------------------------------------------------------------------
+ArubaOS-CX
+(c) Copyright 2017-2022 Hewlett Packard Enterprise Development LP
+-----------------------------------------------------------------------------
+Version      : DL.XX.XX.XXXX                                                 
+Build Date   : 2022-04-16 21:22:42 UTC                                       
+Build ID     : ArubaOS-CX:DL.XX.XX.XXXX:e61357d3d4b5:202204162114            
+Build SHA    : e61357d3d4b532eca7cacdf6bb41e44661b69117                      
+Active Image : primary                       
+
+Service OS Version : DL.01.X1.0004-internal        
+BIOS Version       : DL-01-0004                    
+CX10K-Support-2# 
+
+
+
+
+
+vsx-sync active-gateways
+    vrf attach default
+    ip mtu 9100
+    ip address 10.29.22.5/24
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1

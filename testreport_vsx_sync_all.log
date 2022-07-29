@@ -1,0 +1,2063 @@
+(env1) -bash-4.2$ export PEN_SYSTEST="/home/jayk/vrfclitest/"
+(env1) -bash-4.2$ pyats run job pyats_job_vrf_configchange.py --html-logs --mail-to jayk@pensando.io &
+[1] 7379
+(env1) -bash-4.2$ /home/jayk/env1/lib/python3.6/site-packages/requests/__init__.py:104: RequestsDependencyWarning: urllib3 (1.26.10) or chardet (5.0.0)/charset_normalizer (2.0.12) doesn't match a supported version!
+  RequestsDependencyWarning)
+2022-07-26T06:36:29: %EASYPY-INFO: Starting job run: pyats_job_vrf_configchange
+2022-07-26T06:36:29: %EASYPY-INFO: Runinfo directory: /home/jayk/.pyats/runinfo/pyats_job_vrf_configchange.2022Jul26_06:36:28.515387
+2022-07-26T06:36:29: %EASYPY-INFO: --------------------------------------------------------------------------------
+2022-07-26T06:36:33: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:36:33: %EASYPY-INFO: |                              Clean Information                               |
+2022-07-26T06:36:33: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:36:33: %EASYPY-INFO: {'bringup': {}, 'cleaners': {}, 'devices': {}}
+
+2022-07-26T06:36:33: %EASYPY-INFO: Starting task execution: Task-1
+2022-07-26T06:36:33: %EASYPY-INFO:     test harness = pyats.aetest
+2022-07-26T06:36:33: %EASYPY-INFO:     testscript   = /home/jayk/vrfclitest/vrfrequests.py
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %AETEST-INFO: |                Starting testcase vrf_config_change_standalone                |
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %AETEST-INFO: |                     Starting section iperf_server_start                      |
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:37:54: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ping 10.29.21.71 > ping_log.log & 
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23719  0.0  0.1 165804  1976 ?        Sl   06:37   0:00 iperf -s -i1
+root     23723  0.0  0.1 165804  1980 ?        Sl   06:37   0:00 iperf -s -i1 -u
+root     23728  0.0  0.2  15252  2956 ?        Ss   06:37   0:00 bash -c ps -aux | grep iperf
+root     23730  0.0  0.2  16796  2076 ?        S    06:37   0:00 grep iperf
+
+2022-07-26T06:37:54: %AETEST-INFO: The result of section iperf_server_start is => PASSED
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %AETEST-INFO: |                     Starting section iperf_client_start                      |
+2022-07-26T06:37:54: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:54: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:37:54: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7076  0.0  0.0 163604  1768 ?        Sl   06:37   0:00 iperf -c 10.29.21.60 -i1 -t800
+root        7080  0.0  0.0 163604  1904 ?        Sl   06:37   0:00 iperf -c 10.29.21.60 -i1 -u -t800
+root        7081  0.0  0.0   9828  2608 ?        Ss   06:37   0:00 bash -c ps -aux | grep iperf
+root        7085  0.0  0.0   9368  2208 ?        S    06:37   0:00 grep iperf
+
+2022-07-26T06:37:55: %AETEST-INFO: The result of section iperf_client_start is => PASSED
+2022-07-26T06:37:55: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:55: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba1              |
+2022-07-26T06:37:55: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:37:55: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:37:55: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:37:55: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:38:16: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba1 is => PASSED
+2022-07-26T06:38:16: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:38:16: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba2              |
+2022-07-26T06:38:16: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:38:16: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:38:16: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:38:16: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573108  I/U      6     10.29.21.60                             23727     10.29.21.71                             2048        ICMP      A       
+1573108  R/H      6     10.29.21.71                             23727     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+3145977  I/H      6     10.29.21.71                             36102     10.29.21.60                             5001        UDP       A       
+3145977  R/U      6     10.29.21.60                             5001      10.29.21.71                             36102       UDP       A       
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 4 
+Flow-table-7
+$ 
+2022-07-26T06:38:36: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba2 is => PASSED
+2022-07-26T06:38:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:38:36: %AETEST-INFO: |                Starting section vrf_config_change_standalone                 |
+2022-07-26T06:38:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:38:36: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:38:37: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:38:37: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+['Demo-VRF-01']
+['pod1']
+['1573108  I/U      6     10.29.21.60                             23727     10.29.21.71                             2048        ICMP      A       ', '1573108  R/H      6     10.29.21.71                             23727     10.29.21.60                             0           ICMP      A       ', '3145977  I/H      6     10.29.21.71                             36102     10.29.21.60                             5001        UDP       A       ', '3145977  R/U      6     10.29.21.60                             5001      10.29.21.71                             36102       UDP       A       ', '3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       ', '3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       ']
+['1573108', '  ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23727', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['1573108', '  ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23727', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['3145977', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36102', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['3145977', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36102', '       ', 'UDP', '       ', 'A', '       ', '']
+['3145978', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36588', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36588', '       ', 'TCP', '       ', 'A', '       ', '']
+VRF pod1 mapped to DSM2, changing to DSM1
+2022-07-26T06:38:53: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:38:53: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:38:53: %PARAMIKO-INFO: Authentication (password) successful!
+['1573100  I/U      6     10.29.21.60                             23727     10.29.21.71                             2048        ICMP      A       ', '1573100  R/H      6     10.29.21.71                             23727     10.29.21.60                             0           ICMP      A       ', '3145973  I/H      6     10.29.21.71                             36102     10.29.21.60                             5001        UDP       A       ', '3145973  R/U      6     10.29.21.60                             5001      10.29.21.71                             36102       UDP       A       ']
+['1573100', '  ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23727', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['1573100', '  ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23727', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['3145973', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36102', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['3145973', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36102', '       ', 'UDP', '       ', 'A', '       ', '']
+FLows in vrf pod1 match before and after change to DSM mapping
+UDP flows count : 
+ Pre: 2
+ Post: 2
+ICMP flows count  : 
+ Pre: 2
+ Post: 2
+Other flows count  : 
+ Pre: 0
+ Post: 0
+2022-07-26T06:40:31: %AETEST-INFO: The result of section vrf_config_change_standalone is => PASSED
+2022-07-26T06:40:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:40:31: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba1             |
+2022-07-26T06:40:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:40:31: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:40:31: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:40:31: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573100  I/U      6     10.29.21.60                             23727     10.29.21.71                             2048        ICMP      A       
+1573100  R/H      6     10.29.21.71                             23727     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+3145973  I/H      6     10.29.21.71                             36102     10.29.21.60                             5001        UDP       A       
+3145973  R/U      6     10.29.21.60                             5001      10.29.21.71                             36102       UDP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:40:52: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba1 is => PASSED
+2022-07-26T06:40:52: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:40:52: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba2             |
+2022-07-26T06:40:52: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:40:52: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:40:52: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:40:52: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:41:13: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba2 is => PASSED
+2022-07-26T06:41:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:13: %AETEST-INFO: |                       Starting section get_show_output                       |
+2022-07-26T06:41:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:13: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:41:13: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:41:13: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01, pod1
+
+Distributed Services Modules 1/2
+====================================
+No VRF redirect configured to this Distributed Services module
+
+vsx
+    inter-switch-link lag 256
+    role primary
+    keepalive peer 21.1.1.2 source 21.1.1.1
+    vsx-sync vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.5/24 
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T06:41:34: %AETEST-INFO: The result of section get_show_output is => PASSED
+2022-07-26T06:41:34: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:34: %AETEST-INFO: |                      Starting section iperf_client_stop                      |
+2022-07-26T06:41:34: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:34: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:41:34: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7118  0.0  0.0   9828  2388 ?        Ss   06:41   0:00 bash -c ps -aux | grep iperf
+root        7120  0.0  0.0   9368  2100 ?        S    06:41   0:00 grep iperf
+
+2022-07-26T06:41:34: %AETEST-INFO: The result of section iperf_client_stop is => PASSED
+2022-07-26T06:41:34: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:34: %AETEST-INFO: |                      Starting section iperf_server_stop                      |
+2022-07-26T06:41:34: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:41:34: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:41:34: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall ping
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23774  0.0  0.3  15252  3052 ?        Ss   06:41   0:00 bash -c ps -aux | grep iperf
+root     23776  0.0  0.2  16796  2172 ?        S    06:41   0:00 grep iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+waiting for 100 sec timeout
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+2022-07-26T06:43:15: %AETEST-INFO: The result of section iperf_server_stop is => PASSED
+2022-07-26T06:43:15: %AETEST-INFO: The result of testcase vrf_config_change_standalone is => PASSED
+2022-07-26T06:43:15: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:15: %AETEST-INFO: |                   Starting testcase verify_vsx_oper_status                   |
+2022-07-26T06:43:15: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:15: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:15: %AETEST-INFO: |                      Starting section vrf_status_verify                      |
+2022-07-26T06:43:15: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:15: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:43:15: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:43:15: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> VSX configured , executing VSX_sync test case =>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+2022-07-26T06:43:35: %AETEST-INFO: The result of section vrf_status_verify is => PASSED
+2022-07-26T06:43:35: %AETEST-INFO: The result of testcase verify_vsx_oper_status is => PASSED
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %AETEST-INFO: |                  Starting testcase vrf_clitest_vsx_withsync                  |
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %AETEST-INFO: |                     Starting section iperf_server_start                      |
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:43:35: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ping 10.29.21.71 > ping_log.log & 
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23816  0.0  0.1 165804  1976 ?        Sl   06:43   0:00 iperf -s -i1
+root     23820  0.0  0.1 165804  1924 ?        Sl   06:43   0:00 iperf -s -i1 -u
+root     23825  0.0  0.3  15252  3124 ?        Ss   06:43   0:00 bash -c ps -aux | grep iperf
+root     23827  0.0  0.2  16796  2044 ?        S    06:43   0:00 grep iperf
+
+2022-07-26T06:43:35: %AETEST-INFO: The result of section iperf_server_start is => PASSED
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %AETEST-INFO: |                     Starting section iperf_client_start                      |
+2022-07-26T06:43:35: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:35: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:43:36: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7152  0.0  0.0 163604  1760 ?        Sl   06:43   0:00 iperf -c 10.29.21.60 -i1 -t800
+root        7156  0.0  0.0 163604  1764 ?        Sl   06:43   0:00 iperf -c 10.29.21.60 -i1 -u -t800
+root        7157  0.0  0.0   9828  2536 ?        Ss   06:43   0:00 bash -c ps -aux | grep iperf
+root        7161  0.0  0.0   9368  2072 ?        S    06:43   0:00 grep iperf
+
+2022-07-26T06:43:36: %AETEST-INFO: The result of section iperf_client_start is => PASSED
+2022-07-26T06:43:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:36: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba1              |
+2022-07-26T06:43:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:43:36: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:43:36: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:43:36: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+244      I/U      6     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       
+244      R/H      6     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621690  I/H      6     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       
+2621690  R/U      6     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:43:57: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:43:57: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:43:57: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+240      I/U      5     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       
+240      R/H      5     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621687  I/H      5     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       
+2621687  R/U      5     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:44:17: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba1 is => PASSED
+2022-07-26T06:44:17: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:44:17: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba2              |
+2022-07-26T06:44:17: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:44:18: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:44:18: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:44:18: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:44:38: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:44:38: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:44:38: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:44:59: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba2 is => PASSED
+2022-07-26T06:44:59: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:44:59: %AETEST-INFO: |                 Starting section vrf_cli_flow_test_vsx_sync                  |
+2022-07-26T06:44:59: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:44:59: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:44:59: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:44:59: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01, pod1
+
+Distributed Services Modules 1/2
+====================================
+No VRF redirect configured to this Distributed Services module
+
+['Demo-VRF-01', 'pod1']
+['244      I/U      6     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       ', '244      R/H      6     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       ', '1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       ', '1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       ', '2621690  I/H      6     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       ', '2621690  R/U      6     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       ']
+['244', '      ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23824', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['244', '      ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23824', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['1573099', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36590', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['1573099', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36590', '       ', 'TCP', '       ', 'A', '       ', '']
+['2621690', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '58767', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['2621690', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '58767', '       ', 'UDP', '       ', 'A', '       ', '']
+configuring vsx sync dsm
+2022-07-26T06:45:16: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:45:17: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:45:17: %PARAMIKO-INFO: Authentication (password) successful!
+VRF pod1 mapped to DSM1, changing to DSM2
+2022-07-26T06:45:47: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:45:47: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:45:47: %PARAMIKO-INFO: Authentication (password) successful!
+['253      I/U      6     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       ', '253      R/H      6     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       ', '2621692  I/H      6     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       ', '2621692  R/U      6     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       ', '3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       ', '3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       ']
+['253', '      ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23824', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['253', '      ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23824', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['2621692', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '58767', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['2621692', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '58767', '       ', 'UDP', '       ', 'A', '       ', '']
+['3145978', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36588', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36588', '       ', 'TCP', '       ', 'A', '       ', '']
+No vrfs configured
+FLows in vrf pod1 match before and after change to DSM mapping
+UDP flows count : 
+ Pre: 2
+ Post: 2
+ICMP flows count  : 
+ Pre: 2
+ Post: 2
+Other flows count  : 
+ Pre: 0
+ Post: 0
+2022-07-26T06:47:25: %AETEST-INFO: The result of section vrf_cli_flow_test_vsx_sync is => PASSED
+2022-07-26T06:47:25: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:47:25: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba1             |
+2022-07-26T06:47:25: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:47:25: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:47:25: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:47:25: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:47:45: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:47:45: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:47:45: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:48:06: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba1 is => PASSED
+2022-07-26T06:48:06: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:48:06: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba2             |
+2022-07-26T06:48:06: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:48:06: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:48:06: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:48:06: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+253      I/U      6     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       
+253      R/H      6     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621692  I/H      6     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       
+2621692  R/U      6     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:48:27: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:48:27: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:48:27: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+253      I/U      5     10.29.21.60                             23824     10.29.21.71                             2048        ICMP      A       
+253      R/H      5     10.29.21.71                             23824     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621692  I/H      5     10.29.21.71                             58767     10.29.21.60                             5001        UDP       A       
+2621692  R/U      5     10.29.21.60                             5001      10.29.21.71                             58767       UDP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:48:48: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba2 is => PASSED
+2022-07-26T06:48:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:48:48: %AETEST-INFO: |                       Starting section get_show_output                       |
+2022-07-26T06:48:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:48:48: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:48:48: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:48:48: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+vsx
+    inter-switch-link lag 256
+    role primary
+    keepalive peer 21.1.1.2 source 21.1.1.1
+    vsx-sync dsm vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.5/24 
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T06:49:09: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:49:09: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:49:09: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+vsx
+    inter-switch-link lag 256
+    role secondary
+    keepalive peer 21.1.1.1 source 21.1.1.2
+    vsx-sync dsm vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.2/24 
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T06:49:30: %AETEST-INFO: The result of section get_show_output is => PASSED
+2022-07-26T06:49:30: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:49:30: %AETEST-INFO: |                      Starting section iperf_client_stop                      |
+2022-07-26T06:49:30: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:49:30: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:49:31: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7194  0.0  0.0   9828  2560 ?        Ss   06:49   0:00 bash -c ps -aux | grep iperf
+root        7196  0.0  0.0   9368  2020 ?        S    06:49   0:00 grep iperf
+
+2022-07-26T06:49:31: %AETEST-INFO: The result of section iperf_client_stop is => PASSED
+2022-07-26T06:49:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:49:31: %AETEST-INFO: |                      Starting section iperf_server_stop                      |
+2022-07-26T06:49:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:49:31: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:49:31: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall ping
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23872  0.0  0.2  15252  3024 ?        Ss   06:49   0:00 bash -c ps -aux | grep iperf
+root     23874  0.0  0.2  16796  2112 ?        S    06:49   0:00 grep iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+waiting for 100 sec timeout
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+2022-07-26T06:51:11: %AETEST-INFO: The result of section iperf_server_stop is => PASSED
+2022-07-26T06:51:11: %AETEST-INFO: The result of testcase vrf_clitest_vsx_withsync is => PASSED
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %AETEST-INFO: |            Starting testcase vrf_clitest_vsx_withoutsync_primary             |
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %AETEST-INFO: |                     Starting section iperf_server_start                      |
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:51:12: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ping 10.29.21.71 > ping_log.log & 
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23913  0.0  0.1 165804  1920 ?        Sl   06:51   0:00 iperf -s -i1
+root     23917  0.0  0.1 165804  1952 ?        Sl   06:51   0:00 iperf -s -i1 -u
+root     23922  0.0  0.2  15252  2952 ?        Ss   06:51   0:00 bash -c ps -aux | grep iperf
+root     23924  0.0  0.2  16796  2108 ?        S    06:51   0:00 grep iperf
+
+2022-07-26T06:51:12: %AETEST-INFO: The result of section iperf_server_start is => PASSED
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %AETEST-INFO: |                     Starting section iperf_client_start                      |
+2022-07-26T06:51:12: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:12: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:51:12: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7226  0.0  0.0 163604  1828 ?        Sl   06:51   0:00 iperf -c 10.29.21.60 -i1 -t800
+root        7230  0.0  0.0 163604  1824 ?        Sl   06:51   0:00 iperf -c 10.29.21.60 -i1 -u -t800
+root        7231  0.0  0.0   9828  2480 ?        Ss   06:51   0:00 bash -c ps -aux | grep iperf
+root        7235  0.0  0.0   9368  2064 ?        S    06:51   0:00 grep iperf
+
+2022-07-26T06:51:13: %AETEST-INFO: The result of section iperf_client_start is => PASSED
+2022-07-26T06:51:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:13: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba1              |
+2022-07-26T06:51:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:13: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:51:13: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:51:13: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:51:34: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:51:34: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:51:34: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:51:54: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba1 is => PASSED
+2022-07-26T06:51:55: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:55: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba2              |
+2022-07-26T06:51:55: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:51:55: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:51:55: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:51:55: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+524539   I/H      6     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       
+524539   R/U      6     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573107  I/U      6     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       
+1573107  R/H      6     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621691  I/H      6     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      6     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:52:15: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:52:15: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:52:15: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+524539   I/H      5     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       
+524539   R/U      5     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573107  I/U      5     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       
+1573107  R/H      5     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621691  I/H      5     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      5     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:52:36: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba2 is => PASSED
+2022-07-26T06:52:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:52:36: %AETEST-INFO: |          Starting section vrf_cli_flow_test_vsx_withoutsync_primary          |
+2022-07-26T06:52:36: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:52:36: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:52:36: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:52:36: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+['Demo-VRF-01']
+['pod1']
+['524539   I/H      6     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       ', '524539   R/U      6     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       ', '1573107  I/U      6     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       ', '1573107  R/H      6     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       ', '2621691  I/H      6     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       ', '2621691  R/U      6     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       ', '3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       ', '3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       ']
+['524539', '   ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '53892', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['524539', '   ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '53892', '       ', 'UDP', '       ', 'A', '       ', '']
+['1573107', '  ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23921', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['1573107', '  ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23921', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['2621691', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36592', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['2621691', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36592', '       ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36588', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36588', '       ', 'TCP', '       ', 'A', '       ', '']
+unconfiguring vsx sync dsm
+2022-07-26T06:52:54: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:52:54: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:52:54: %PARAMIKO-INFO: Authentication (password) successful!
+VRF pod1 mapped to DSM2, changing to DSM1
+2022-07-26T06:53:24: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:53:24: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:53:24: %PARAMIKO-INFO: Authentication (password) successful!
+['524531   I/H      6     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       ', '524531   R/U      6     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       ', '1573098  I/U      6     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       ', '1573098  R/H      6     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       ', '1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       ', '1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       ']
+['524531', '   ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '53892', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['524531', '   ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '53892', '       ', 'UDP', '       ', 'A', '       ', '']
+['1573098', '  ', 'I/U', '      ', '6', '     ', '10.29.21.60', '                             ', '23921', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['1573098', '  ', 'R/H', '      ', '6', '     ', '10.29.21.71', '                             ', '23921', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['1573099', '  ', 'I/H', '      ', '6', '     ', '10.29.21.71', '                             ', '36590', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['1573099', '  ', 'R/U', '      ', '6', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36590', '       ', 'TCP', '       ', 'A', '       ', '']
+FLows in vrf pod1 match before and after change to DSM mapping
+UDP flows count : 
+ Pre: 2
+ Post: 2
+ICMP flows count  : 
+ Pre: 2
+ Post: 2
+Other flows count  : 
+ Pre: 0
+ Post: 0
+2022-07-26T06:55:02: %AETEST-INFO: The result of section vrf_cli_flow_test_vsx_withoutsync_primary is => PASSED
+2022-07-26T06:55:02: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:55:02: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba1             |
+2022-07-26T06:55:02: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:55:02: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:55:02: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:55:02: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+524531   I/H      6     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       
+524531   R/U      6     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573098  I/U      6     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       
+1573098  R/H      6     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 4 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:55:22: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:55:22: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:55:22: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+524531   I/H      5     10.29.21.71                             53892     10.29.21.60                             5001        UDP       A       
+524531   R/U      5     10.29.21.60                             5001      10.29.21.71                             53892       UDP       A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573104  I/U      5     10.29.21.60                             23921     10.29.21.71                             2048        ICMP      A       
+1573104  R/H      5     10.29.21.71                             23921     10.29.21.60                             0           ICMP      A       
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 4 
+Flow-table-4
+Flow-table-5
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:55:43: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba1 is => PASSED
+2022-07-26T06:55:43: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:55:43: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba2             |
+2022-07-26T06:55:43: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:55:43: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:55:43: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:55:43: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      6     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      6     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:56:04: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:56:04: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:56:04: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      5     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      5     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:56:25: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba2 is => PASSED
+2022-07-26T06:56:25: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:56:25: %AETEST-INFO: |                       Starting section get_show_output                       |
+2022-07-26T06:56:25: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:56:25: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:56:25: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:56:25: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01, pod1
+
+Distributed Services Modules 1/2
+====================================
+No VRF redirect configured to this Distributed Services module
+
+vsx
+    inter-switch-link lag 256
+    role primary
+    keepalive peer 21.1.1.2 source 21.1.1.1
+    vsx-sync vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.5/24 
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T06:56:46: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:56:46: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:56:46: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+vsx
+    inter-switch-link lag 256
+    role secondary
+    keepalive peer 21.1.1.1 source 21.1.1.2
+    vsx-sync vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.2/24 
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T06:57:07: %AETEST-INFO: The result of section get_show_output is => PASSED
+2022-07-26T06:57:07: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:57:07: %AETEST-INFO: |                      Starting section iperf_client_stop                      |
+2022-07-26T06:57:07: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:57:07: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:57:07: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7268  0.0  0.0   9828  2408 ?        Ss   06:57   0:00 bash -c ps -aux | grep iperf
+root        7270  0.0  0.0   9368  2100 ?        S    06:57   0:00 grep iperf
+
+2022-07-26T06:57:07: %AETEST-INFO: The result of section iperf_client_stop is => PASSED
+2022-07-26T06:57:08: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:57:08: %AETEST-INFO: |                      Starting section iperf_server_stop                      |
+2022-07-26T06:57:08: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:57:08: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:57:08: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall ping
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     23969  0.0  0.3  15252  3092 ?        Ss   06:57   0:00 bash -c ps -aux | grep iperf
+root     23971  0.0  0.2  16796  2064 ?        S    06:57   0:00 grep iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+waiting for 100 sec timeout
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>
+2022-07-26T06:58:48: %AETEST-INFO: The result of section iperf_server_stop is => PASSED
+2022-07-26T06:58:48: %AETEST-INFO: The result of testcase vrf_clitest_vsx_withoutsync_primary is => PASSED
+2022-07-26T06:58:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:48: %AETEST-INFO: |           Starting testcase vrf_clitest_vsx_withoutsync_secondary            |
+2022-07-26T06:58:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:48: %AETEST-INFO: |                     Starting section iperf_server_start                      |
+2022-07-26T06:58:48: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:48: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T06:58:49: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ping 10.29.21.71 > ping_log.log & 
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     24010  0.0  0.2 165804  2020 ?        Sl   06:58   0:00 iperf -s -i1
+root     24014  0.0  0.1 165804  1980 ?        Sl   06:58   0:00 iperf -s -i1 -u
+root     24019  0.0  0.2  15252  2944 ?        Ss   06:58   0:00 bash -c ps -aux | grep iperf
+root     24021  0.0  0.2  16796  2108 ?        S    06:58   0:00 grep iperf
+
+2022-07-26T06:58:49: %AETEST-INFO: The result of section iperf_server_start is => PASSED
+2022-07-26T06:58:49: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:49: %AETEST-INFO: |                     Starting section iperf_client_start                      |
+2022-07-26T06:58:49: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:49: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T06:58:49: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7300  0.0  0.0 163604  1772 ?        Sl   06:58   0:00 iperf -c 10.29.21.60 -i1 -t800
+root        7304  0.0  0.0 163604  1756 ?        Sl   06:58   0:00 iperf -c 10.29.21.60 -i1 -u -t800
+root        7305  0.0  0.0   9828  2420 ?        Ss   06:58   0:00 bash -c ps -aux | grep iperf
+root        7309  0.0  0.0   9368  2052 ?        S    06:58   0:00 grep iperf
+
+2022-07-26T06:58:49: %AETEST-INFO: The result of section iperf_client_start is => PASSED
+2022-07-26T06:58:49: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:49: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba1              |
+2022-07-26T06:58:49: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:58:50: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:58:50: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:58:50: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+243      I/H      6     10.29.21.71                             36594     10.29.21.60                             5001        TCP       A       
+243      R/U      6     10.29.21.60                             5001      10.29.21.71                             36594       TCP       A       
+No. of flows: 2 
+Flow-table-1
+524530   I/U      6     10.29.21.60                             24018     10.29.21.71                             2048        ICMP      A       
+524530   R/H      6     10.29.21.71                             24018     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621689  I/H      6     10.29.21.71                             42028     10.29.21.60                             5001        UDP       A       
+2621689  R/U      6     10.29.21.60                             5001      10.29.21.71                             42028       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:59:10: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:59:10: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:59:10: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+239      I/H      5     10.29.21.71                             36594     10.29.21.60                             5001        TCP       A       
+239      R/U      5     10.29.21.60                             5001      10.29.21.71                             36594       TCP       A       
+No. of flows: 2 
+Flow-table-1
+524530   I/U      5     10.29.21.60                             24018     10.29.21.71                             2048        ICMP      A       
+524530   R/H      5     10.29.21.71                             24018     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621686  I/H      5     10.29.21.71                             42028     10.29.21.60                             5001        UDP       A       
+2621686  R/U      5     10.29.21.60                             5001      10.29.21.71                             42028       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T06:59:31: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba1 is => PASSED
+2022-07-26T06:59:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:59:31: %AETEST-INFO: |             Starting section get_elba_pretest_flow_output_elba2              |
+2022-07-26T06:59:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T06:59:31: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:59:31: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:59:31: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      6     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      6     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T06:59:52: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T06:59:52: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T06:59:52: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      5     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      5     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T07:00:13: %AETEST-INFO: The result of section get_elba_pretest_flow_output_elba2 is => PASSED
+2022-07-26T07:00:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:00:13: %AETEST-INFO: |         Starting section vrf_cli_flow_test_vsx_withoutsync_secondary         |
+2022-07-26T07:00:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:00:13: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:00:13: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:00:13: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01
+
+Distributed Services Modules 1/2
+====================================
+VRFs: pod1
+
+['Demo-VRF-01']
+['pod1']
+['2621691  I/H      5     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       ', '2621691  R/U      5     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       ', '3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       ', '3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       ']
+['2621691', '  ', 'I/H', '      ', '5', '     ', '10.29.21.71', '                             ', '36592', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['2621691', '  ', 'R/U', '      ', '5', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36592', '       ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'I/H', '      ', '5', '     ', '10.29.21.71', '                             ', '36588', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['3145978', '  ', 'R/U', '      ', '5', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36588', '       ', 'TCP', '       ', 'A', '       ', '']
+VRF pod1 mapped to DSM2, changing to DSM1
+2022-07-26T07:00:30: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:00:30: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:00:30: %PARAMIKO-INFO: Authentication (password) successful!
+['239      I/H      5     10.29.21.71                             36594     10.29.21.60                             5001        TCP       A       ', '239      R/U      5     10.29.21.60                             5001      10.29.21.71                             36594       TCP       A       ', '524530   I/U      5     10.29.21.60                             24018     10.29.21.71                             2048        ICMP      A       ', '524530   R/H      5     10.29.21.71                             24018     10.29.21.60                             0           ICMP      A       ', '1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       ', '1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       ', '2621686  I/H      5     10.29.21.71                             42028     10.29.21.60                             5001        UDP       A       ', '2621686  R/U      5     10.29.21.60                             5001      10.29.21.71                             42028       UDP       A       ']
+['239', '      ', 'I/H', '      ', '5', '     ', '10.29.21.71', '                             ', '36594', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['239', '      ', 'R/U', '      ', '5', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36594', '       ', 'TCP', '       ', 'A', '       ', '']
+['524530', '   ', 'I/U', '      ', '5', '     ', '10.29.21.60', '                             ', '24018', '     ', '10.29.21.71', '                             ', '2048', '        ', 'ICMP', '      ', 'A', '       ', '']
+['524530', '   ', 'R/H', '      ', '5', '     ', '10.29.21.71', '                             ', '24018', '     ', '10.29.21.60', '                             ', '0', '           ', 'ICMP', '      ', 'A', '       ', '']
+['1573105', '  ', 'I/H', '      ', '5', '     ', '10.29.21.71', '                             ', '36590', '     ', '10.29.21.60', '                             ', '5001', '        ', 'TCP', '       ', 'A', '       ', '']
+['1573105', '  ', 'R/U', '      ', '5', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '36590', '       ', 'TCP', '       ', 'A', '       ', '']
+['2621686', '  ', 'I/H', '      ', '5', '     ', '10.29.21.71', '                             ', '42028', '     ', '10.29.21.60', '                             ', '5001', '        ', 'UDP', '       ', 'A', '       ', '']
+['2621686', '  ', 'R/U', '      ', '5', '     ', '10.29.21.60', '                             ', '5001', '      ', '10.29.21.71', '                             ', '42028', '       ', 'UDP', '       ', 'A', '       ', '']
+FLows in vrf pod1 match before and after change to DSM mapping
+UDP flows count : 
+ Pre: 0
+ Post: 2
+ICMP flows count  : 
+ Pre: 0
+ Post: 2
+Other flows count  : 
+ Pre: 0
+ Post: 0
+2022-07-26T07:02:08: %AETEST-INFO: The result of section vrf_cli_flow_test_vsx_withoutsync_secondary is => PASSED
+2022-07-26T07:02:08: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:02:08: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba1             |
+2022-07-26T07:02:08: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:02:08: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:02:08: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:02:08: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+243      I/H      6     10.29.21.71                             36594     10.29.21.60                             5001        TCP       A       
+243      R/U      6     10.29.21.60                             5001      10.29.21.71                             36594       TCP       A       
+No. of flows: 2 
+Flow-table-1
+524530   I/U      6     10.29.21.60                             24018     10.29.21.71                             2048        ICMP      A       
+524530   R/H      6     10.29.21.71                             24018     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573099  I/H      6     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573099  R/U      6     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621689  I/H      6     10.29.21.71                             42028     10.29.21.60                             5001        UDP       A       
+2621689  R/U      6     10.29.21.60                             5001      10.29.21.71                             42028       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T07:02:29: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:02:29: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:02:29: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+239      I/H      5     10.29.21.71                             36594     10.29.21.60                             5001        TCP       A       
+239      R/U      5     10.29.21.60                             5001      10.29.21.71                             36594       TCP       A       
+No. of flows: 2 
+Flow-table-1
+524530   I/U      5     10.29.21.60                             24018     10.29.21.71                             2048        ICMP      A       
+524530   R/H      5     10.29.21.71                             24018     10.29.21.60                             0           ICMP      A       
+No. of flows: 2 
+Flow-table-2
+Flow-table-3
+1573105  I/H      5     10.29.21.71                             36590     10.29.21.60                             5001        TCP       A       
+1573105  R/U      5     10.29.21.60                             5001      10.29.21.71                             36590       TCP       A       
+No. of flows: 2 
+Flow-table-4
+Flow-table-5
+2621686  I/H      5     10.29.21.71                             42028     10.29.21.60                             5001        UDP       A       
+2621686  R/U      5     10.29.21.60                             5001      10.29.21.71                             42028       UDP       A       
+No. of flows: 2 
+Flow-table-6
+Flow-table-7
+$ 
+2022-07-26T07:02:50: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba1 is => PASSED
+2022-07-26T07:02:50: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:02:50: %AETEST-INFO: |             Starting section get_elba_posttest_flow_output_elba2             |
+2022-07-26T07:02:50: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:02:50: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:02:50: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:02:50: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      6     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      6     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      6     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      6     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T07:03:10: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:03:10: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:03:10: %PARAMIKO-INFO: Authentication (password) successful!
+Legend
+Handle    : Session Handle
+Role      : I (Initiator), R (Responder)
+Direction : U (From Uplink), H (From Host)
+BdId      : Bridge Domain ID or subnet ID
+SIP       : Source IP address
+Sport     : Source port for TCP/UDP
+Id        : ICMP identifier
+DIP       : Destination IP address
+Dport     : Destination port for TCP/UDP
+TyCo      : ICMP type and code
+Proto     : IP Protocol
+Action    : A (Allow), D (Drop), P (Pending evaluation)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Handle  Role/Dir  BdId  SIP                                     Sport|Id  DIP                                     Dport|TyCo  Proto  Action  
+--------------------------------------------------------------------------------------------------------------------------------------------
+Flow-table-0
+Flow-table-1
+Flow-table-2
+Flow-table-3
+Flow-table-4
+Flow-table-5
+2621691  I/H      5     10.29.21.71                             36592     10.29.21.60                             5001        TCP       A       
+2621691  R/U      5     10.29.21.60                             5001      10.29.21.71                             36592       TCP       A       
+No. of flows: 2 
+Flow-table-6
+3145978  I/H      5     10.29.21.71                             36588     10.29.21.60                             5001        TCP       A       
+3145978  R/U      5     10.29.21.60                             5001      10.29.21.71                             36588       TCP       A       
+No. of flows: 2 
+Flow-table-7
+$ 
+2022-07-26T07:03:31: %AETEST-INFO: The result of section get_elba_posttest_flow_output_elba2 is => PASSED
+2022-07-26T07:03:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:03:31: %AETEST-INFO: |                       Starting section get_show_output                       |
+2022-07-26T07:03:31: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:03:31: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:03:31: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:03:31: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01, pod1
+
+Distributed Services Modules 1/2
+====================================
+No VRF redirect configured to this Distributed Services module
+
+vsx
+    inter-switch-link lag 256
+    role primary
+    keepalive peer 21.1.1.2 source 21.1.1.1
+    vsx-sync vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.5/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.5/24 
+    active-gateway L3 source mac 04:90:81:00:2c:b0
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T07:03:52: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.8)
+2022-07-26T07:03:52: %PARAMIKO-INFO: Auth banner: b"\n (C) Copyright 2017-2022 Hewlett Packard Enterprise Development LP\n\n                      RESTRICTED RIGHTS LEGEND\n Confidential computer software. Valid license from Hewlett Packard Enterprise\n Development LP required for possession, use or copying. Consistent with FAR\n 12.211 and 12.212, Commercial Computer Software, Computer Software\n Documentation, and Technical Data for Commercial Items are licensed to the\n U.S. Government under vendor's standard commercial license.\n\nWe'd like to keep you up to date about:\n  * Software feature updates\n  * New product announcements\n  * Special events\nPlease register your products now at: https://asp.arubanetworks.com\n\n\n"
+2022-07-26T07:03:52: %PARAMIKO-INFO: Authentication (password) successful!
+Distributed Services Modules 1/1
+====================================
+VRFs: Demo-VRF-01, pod1
+
+Distributed Services Modules 1/2
+====================================
+No VRF redirect configured to this Distributed Services module
+
+vsx
+    inter-switch-link lag 256
+    role secondary
+    keepalive peer 21.1.1.1 source 21.1.1.2
+    vsx-sync vsx-global
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/50 
+    no shutdown
+    lag 256
+interface 1/1/49 
+    no shutdown
+    lag 256
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface vlan21 
+    ip address 10.29.21.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan22 
+    ip address 10.29.22.2/24 
+    vsx-sync active-gateways
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan31 
+    ip address 10.29.31.2/24 
+    active-gateway L3 source mac 04:90:81:00:20:80
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+2022-07-26T07:04:13: %AETEST-INFO: The result of section get_show_output is => PASSED
+2022-07-26T07:04:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:13: %AETEST-INFO: |                      Starting section iperf_client_stop                      |
+2022-07-26T07:04:13: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:13: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_8.2p1)
+2022-07-26T07:04:14: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root        7344  0.0  0.0   9828  2480 ?        Ss   07:04   0:00 bash -c ps -aux | grep iperf
+root        7346  0.0  0.0   9368  2160 ?        S    07:04   0:00 grep iperf
+
+2022-07-26T07:04:14: %AETEST-INFO: The result of section iperf_client_stop is => PASSED
+2022-07-26T07:04:14: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:14: %AETEST-INFO: |                      Starting section iperf_server_stop                      |
+2022-07-26T07:04:14: %AETEST-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:14: %PARAMIKO-INFO: Connected (version 2.0, client OpenSSH_7.6p1)
+2022-07-26T07:04:14: %PARAMIKO-INFO: Authentication (password) successful!
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> pkill -9 iperf
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> killall ping
+
+=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=>=> ps -aux | grep iperf
+root     24066  0.0  0.3  15252  3120 ?        Ss   07:04   0:00 bash -c ps -aux | grep iperf
+root     24068  0.0  0.2  16796  2204 ?        S    07:04   0:00 grep iperf
+
+2022-07-26T07:04:15: %AETEST-INFO: The result of section iperf_server_stop is => PASSED
+2022-07-26T07:04:15: %AETEST-INFO: The result of testcase vrf_clitest_vsx_withoutsync_secondary is => PASSED
+Total time to execute the test suite: 1661.7477495670319 secs
+2022-07-26T07:04:15: %EASYPY-INFO: Generating HTML report file
+2022-07-26T07:04:15: %EASYPY-INFO: --------------------------------------------------------------------------------
+2022-07-26T07:04:15: %EASYPY-INFO: Job finished. Wrapping up...
+2022-07-26T07:04:15: %EASYPY-INFO: Creating archive file: /home/jayk/.pyats/archive/22-Jul/pyats_job_vrf_configchange.2022Jul26_06:36:28.515387.zip
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: |                                Easypy Report                                 |
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: pyATS Instance   : /home/jayk/env1
+2022-07-26T07:04:16: %EASYPY-INFO: Python Version   : cpython-3.6.8 (64bit)
+2022-07-26T07:04:16: %EASYPY-INFO: CLI Arguments    : /home/jayk/env1/bin/pyats run job pyats_job_vrf_configchange.py --html-logs --mail-to jayk@pensando.io
+2022-07-26T07:04:16: %EASYPY-INFO: User             : jayk
+2022-07-26T07:04:16: %EASYPY-INFO: Host Server      : srv6.pensando.io
+2022-07-26T07:04:16: %EASYPY-INFO: Host OS Version  : CentOS Linux 7 Core (x86_64)
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: Job Information
+2022-07-26T07:04:16: %EASYPY-INFO:     Name         : pyats_job_vrf_configchange
+2022-07-26T07:04:16: %EASYPY-INFO:     Start time   : 2022-07-26 06:36:33.352509-07:00
+2022-07-26T07:04:16: %EASYPY-INFO:     Stop time    : 2022-07-26 07:04:15.117177-07:00
+2022-07-26T07:04:16: %EASYPY-INFO:     Elapsed time : 1661.764668
+2022-07-26T07:04:16: %EASYPY-INFO:     Archive      : /home/jayk/.pyats/archive/22-Jul/pyats_job_vrf_configchange.2022Jul26_06:36:28.515387.zip
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: Total Tasks    : 1 
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: Overall Stats
+2022-07-26T07:04:16: %EASYPY-INFO:     Passed     : 5
+2022-07-26T07:04:16: %EASYPY-INFO:     Passx      : 0
+2022-07-26T07:04:16: %EASYPY-INFO:     Failed     : 0
+2022-07-26T07:04:16: %EASYPY-INFO:     Aborted    : 0
+2022-07-26T07:04:16: %EASYPY-INFO:     Blocked    : 0
+2022-07-26T07:04:16: %EASYPY-INFO:     Skipped    : 0
+2022-07-26T07:04:16: %EASYPY-INFO:     Errored    : 0
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO:     TOTAL      : 5
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: Success Rate   : 100.00 %
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: |                             Task Result Summary                              |
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests.vrf_config_change_standalone                          PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests.verify_vsx_oper_status                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests.vrf_clitest_vsx_withsync                              PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests.vrf_clitest_vsx_withoutsync_primary                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests.vrf_clitest_vsx_withoutsync_secondary                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: 
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: |                             Task Result Details                              |
+2022-07-26T07:04:16: %EASYPY-INFO: +------------------------------------------------------------------------------+
+2022-07-26T07:04:16: %EASYPY-INFO: Task-1: vrfrequests
+2022-07-26T07:04:16: %EASYPY-INFO: |-- vrf_config_change_standalone                                          PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_server_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba1                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba2                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- vrf_config_change_standalone                                      PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba1                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba2                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_show_output                                                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   `-- iperf_server_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |-- verify_vsx_oper_status                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   `-- vrf_status_verify                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |-- vrf_clitest_vsx_withsync                                              PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_server_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba1                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba2                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- vrf_cli_flow_test_vsx_sync                                        PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba1                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba2                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_show_output                                                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   `-- iperf_server_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |-- vrf_clitest_vsx_withoutsync_primary                                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_server_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba1                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_pretest_flow_output_elba2                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- vrf_cli_flow_test_vsx_withoutsync_primary                         PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba1                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_elba_posttest_flow_output_elba2                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- get_show_output                                                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   |-- iperf_client_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: |   `-- iperf_server_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: `-- vrf_clitest_vsx_withoutsync_secondary                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- iperf_server_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- iperf_client_start                                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- get_elba_pretest_flow_output_elba1                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- get_elba_pretest_flow_output_elba2                                PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- vrf_cli_flow_test_vsx_withoutsync_secondary                       PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- get_elba_posttest_flow_output_elba1                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- get_elba_posttest_flow_output_elba2                               PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- get_show_output                                                   PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     |-- iperf_client_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO:     `-- iperf_server_stop                                                 PASSED
+2022-07-26T07:04:16: %EASYPY-INFO: Sending report email...
+2022-07-26T07:04:16: %EASYPY-INFO: Missing SMTP server configuration, or failed to reach/authenticate/send mail. Result notification email failed to send.
+2022-07-26T07:04:16: %EASYPY-INFO: Done!
+
+Pro Tip
+-------
+   Try the following command to view your logs:
+       pyats logs view
+
+
+[1]+  Done                    pyats run job pyats_job_vrf_configchange.py --html-logs --mail-to jayk@pensando.io
+(env1) -bash-4.2$ 

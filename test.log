@@ -1,0 +1,84 @@
+    commands1 = [
+    "nohup iperf -c 10.29.21.60 -i1 -t500  > test_tcp_iperf.log 2>&1 &" ,
+    "nohup iperf -c 10.29.21.60 -i1 -u -t500 > test_udp_iperf.log 2>&1 &",
+    "df -h"]
+
+
+
+
+nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 & 
+nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 & 
+ping 10.29.21.71 > ping_log.log &
+
+
+
+iperf -c 10.29.21.60 -i1 -u -t500  > test_tcp_iperf.log &
+iperf -c 10.29.21.60 -i1 -t500 > test_udp_iperf.log &
+
+iperf -s -i1  > test_tcp_iperf.log &
+iperf -s -i1 -u > test_tcp_iperf.log &
+ping 10.29.21.71 > ping_log.log &
+
+
+
+./iperf_server.sh
+
+
+./iperf_client.sh
+
+@aetest.test
+def iperf_client_stop(self):
+    host_ip = '192.168.70.178'
+    username = 'root'
+    passwd = 'docker'
+
+    commands1 = ["killall iperf" ,
+     "ps -aux | grep iperf"]
+
+    iperf_client= paramiko.SSHClient()
+    iperf_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        iperf_client.connect(hostname=host_ip, username=username, password=passwd)
+    except:
+        print("[!] Cannot connect to the iperf Server")
+        exit()
+
+    for command in commands1:
+        print("=>"*50, command)
+        stdin, stdout, stderr = iperf_client.exec_command(command)
+        print(stdout.read().decode())
+        err = stderr.read().decode()
+        if err:
+            print(err)
+    
+
+
+
+@aetest.test
+def iperf_server_stop(self):
+    host_ip = '192.168.70.223'
+    username = 'root'
+    passwd = 'docker'
+
+    commands = ["killall iperf", 
+"killall ping", 
+ "ps -aux | grep iperf"]
+
+    iperf_server= paramiko.SSHClient()
+    iperf_server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+        iperf_server.connect(hostname=host_ip, username=username, password=passwd)
+    except:
+        print("[!] Cannot connect to the iperf Server")
+        exit()
+
+    for command in commands:
+        print("=>"*50, command)
+        stdin, stdout, stderr = iperf_server.exec_command(command)
+        print(stdout.read().decode())
+        err = stderr.read().decode()
+        if err:
+            print(err)
+    
+
+

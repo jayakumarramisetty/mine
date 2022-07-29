@@ -1,0 +1,295 @@
+In this section we see the entry details of the TCAM(IFP and EFP) with example iniside the BRCM for both L2VNI anfd L3VNI case
+
+Example VLAN160 for L3VNI and VLAN199 for L2VNI  and the uplink port number is 1/1/51
+
+# show running-config interface 1/1/51
+interface 1/1/51 
+    no shutdown 
+    persona uplink=====>persona is pointed to uplink
+    mtu 9198
+    ip address 100.1.1.1/30
+    ip mtu 9198
+    exit
+
+Verify the VXLAN and VNI (L2 and L3) information
+
+# show vrf VRF1
+VRF Configuration:
+------------------
+VRF Name   : VRF1
+        Interfaces             Status
+        -----------------------------
+        vlan160                  up==============>(Vlan 160 attached to VRF1)
+
+# show interface vxlan 
+Interface vxlan1 is up 
+Admin state is up
+Description: 
+Underlay VRF: default
+Destination UDP port: 4789
+VTEP source IPv4 address: 11.11.11.1
+
+VNI        Routing      VLAN   VRF          VTEP Peers        Origin  
+---------- ------------ ------ ------------ ----------------- --------
+2001       disabled     199    --           12.12.12.1        static     
+900003     enabled      --     VRF1         --                --      ===================>Interface vrf has an l3 vni 
+
+Get the OVS programming for the uplink port (1/1/51 in this exapmle), and get the value of switch_intf_id which is the port number in shell
+
+# start-shell
+:~$ sudo su
+:/home/admin# ovsdb-client dump Interface name hw_intf_info |grep -w 1/1/51
+{card_intf_number="51", child_number="1", connector="SFP28", mac_addr="04:90:81:00:2c:dd", max_speed="25000", pluggable="true", speeds="10000,25000", switch_intf_id="83", switch_unit="0", tuning_type="TM_qsfpR1_tuning"}                                                                                                                       "1/1/51:1"   
+{card_intf_number="51", child_number="2", connector="SFP28", mac_addr="04:90:81:00:2c:dc", max_speed="25000", pluggable="true", speeds="10000,25000", switch_intf_id="84", switch_unit="0", tuning_type="TM_qsfpR1_tuning"}                                                                                                                       "1/1/51:2"   
+{card_intf_number="51", child_number="3", connector="SFP28", mac_addr="04:90:81:00:2c:db", max_speed="25000", pluggable="true", speeds="10000,25000", switch_intf_id="85", switch_unit="0", tuning_type="TM_qsfpR1_tuning"}                                                                                                                       "1/1/51:3"   
+{card_intf_number="51", child_number="4", connector="SFP28", mac_addr="04:90:81:00:2c:da", max_speed="25000", pluggable="true", speeds="10000,25000", switch_intf_id="86", switch_unit="0", tuning_type="TM_qsfpR1_tuning"}                                                                                                                       "1/1/51:4"   
+{card_intf_number="51", connector="QSFP28", mac_addr="04:90:81:00:2c:dd", max_speed="100000", module_eeprom="qsfp28p51", pluggable="true", pm_max_power="5000", speeds="10000,25000,40000,100000", switch_intf_id="83", switch_unit="0", transceiver_bay_type="QSFP_40G_100G_DC", tuning_type="TM_qsfpR1_tuning"}                                 "1/1/51"     
+
+
+From the above output the switch intf id inside shell for port 1/1/51 is 83 which is the Portidentifier.
+
+We can also login to the BCM shell to check the port number 
+
+BCM.0> port 83
+PORT: Status (* indicates PHY link up)
+ *ce7     (EnabledLS(SW Forced((100GFD) STP(Forward) Lrn(ARL,FWD) UtPri(0) Pfm(FloodNone) IF(KR4) PH(Slave) Max_frame(9216) MDIX(ForcedNormal, Normal) Medium(None) VLANFILTER(3) 
+
+
+Front panel port 1/1/51 is BCM port *ce7
+
+VLAN filter which has the L2VNI information
+
+
+:/home/admin# ovs-appctl dssPD/show_vlan_filter
+
+================Service Filter's PD info==========================
+vlan_id   svc_lag  Tid  l2_vni     status          svc_vport      svc_egr_obj_id     ifp_rd_ap_l2_entry ifp_rd_ap_l3_entry ifp_rd_np_entry    bitmap    
+<Truncated>......
+1054      lag522   2    -1         ADD_SUCCESS     0x0            0x0                0x7f9852013d00     0x7f9852013800     (nil)              0x63        
+211       lag522   2    -1         ADD_SUCCESS     0x0            0x0                0x7f986d23da00     0x7f986d23d500     (nil)              0x63        
+199       lag521   1    2001       ADD_SUCCESS     0x80000002     0x246a2            0x7f986d23e900     0x7f986d23d000     0x7f986d23ee00     0x5f  
+
+
+In the above for our example for VLAN199 L2VNI 2001 is pointing to lag 521 which is going to elba 1 and tid is also 1 you will also see the three ifp rules but the one getting considered is only “ifp_rd_np_entry” in case of L2 VNI which is “0x7f986d23ee00"    
+
+
+L3 VNI filter check
+
+:/home/admin# ovs-appctl dssPD/show_l3vni_filters
+
+================L3VNI Filter's PD info==========================
+vrf                  svc_lag  Tid  l3_vni     status          ifp_rd_np_entry   
+VRF1                 lag521   1    900003     ADD_SUCCESS     0x7f986d23fd00    
+
+In the above for our example VLAN160 which part of VRF1 has the L3VNI as 900003 which has the “ifp_entry” as 0x7f986d23fd00
+
+For L2 VNI for Vlan 199 entry = 0x7f986d23ee00
+For L3 VNI for vlan 160 entry= 0x7f986d23fd00
+
+
+
+Init time filter check:
+
+
+:/home/admin# ovs-appctl dssPD/show_init_time_filters
+
+<Truncated>.......  
+77         NO       77                  0x7f986e9b9b00     0x7f986e9d3000     
+78         NO       78                  0x7f986e9d3500     0x7f986e9d3a00     
+83         NO       2048                0x7f986e9d3f00     0x7f986e9d4400  ==========>(Here is the port 83 which we got for port 1/1/51)   
+87         NO       2048                0x7f986e9d4900     0x7f986e9d4e00     
+
+<Truncated>.....
+============
+
+
+83         NO       2048                0x7f986e9d3f00     0x7f986e9d4400  ==========>(Here is the port 83 which we got for port 1/1/51) Which has the EFP which is. the egress policy which makes sure of which VLAN tag to be added for L2VNI case before sending to ELBA
+
+L2 VNI EFP rule: 0x7f986e9d4400
+
+
+No tag will be added for L3VNI case
+
+Check the hardware entries for respective rules which are highlited above
+
+Ingress Rule for L2VNI
+
+:/home/admin# ovs-appctl tcam/read-entry -i 0x7f986d23ee00 -w
+Reading entry ID 0x7f986d23ee00
+Include hardware entries in output
+Entry ID: 0x7f986d23ee00
+  Group ID: 0x7f985b3f5900
+  Group Name: Ingress_Distributed_Services(DSSING)
+  Create time: Tue Oct 19 03:42:19 2021
+  Precedence: 13
+  Flags: 0x1000 ( )
+  Installed: true
+  Hardware Entry ID: 0x7f9851d850e0
+    Unit: 0
+    SDK handle: 0x26a
+    HW precedence: 0xd
+  Installed: true
+
+Egress Rule for L2VNI
+
+CX10K-Support-1:/home/admin# ovs-appctl tcam/read-entry -i 0x7f986e9d4400 -w
+Reading entry ID 0x7f986e9d4400
+Include hardware entries in output
+Entry ID: 0x7f986e9d4400
+  Group ID: 0x7f985b3f5c00
+  Group Name: Egress_Distributed_Services(DSSEGR)
+  Create time: Wed Oct 13 23:21:44 2021
+  Precedence: 13
+  Flags: 0x2000 ( )
+  Installed: true
+  Hardware Entry ID: 0x7f986d29f5a0
+    Unit: 0
+    SDK handle: 0xfe
+    HW precedence: 0xd
+  Installed: true
+
+
+Please note the “SDK handle” which is the hardware entry used to verify filter in BCM shell
+
+
+The above ingress rules from vlan filters and egress rules form init filter will be hit before the packet is sent back to elba the actions can be seen in the below BCM shell outputs
+
+Ingress rule and action are pointed in the below snippet
+
+BCM.0> fp show entry 0x26a
+EID 0x0000026a: gid=0x3,
+ slice=3, slice_idx=0x54, part=0, prio=0xd, flags=0x10602, Installed, Enabled, color_indep=1
+
+ Drop 
+    Part:0 Offset0: 159 Width0:   1 
+    DATA=0x00000000 
+    MASK=0x00000001 
+ IpType 
+    Part:0 Offset0: 92 Width0:   4 
+    Part:0 Offset1: 150 Width1:   1 
+    DATA=0x00000000 
+    MASK=0x0000000e 
+ InterfaceClassPort ===========================>(This will indicate that the match is for the traffic coming from fabric side that means the ingress port 1/1/51 is uplink/network port)
+    Part:0 Offset0: 20 Width0:  12 
+    DATA=0x00000012 
+    MASK=0x00000012 
+ VxlanNetworkId ============================>(This field will have the l2vni for our case which is 2001 in our case)
+    Part:0 Offset0:  0 Width0:  16 
+    Part:0 Offset1: 16 Width1:   4 
+    Part:0 Offset2: 36 Width2:   4 
+    DATA=0x000007d1 
+    MASK=0x00ffffff 
+         action={act=RedirectEgrNextHop, param0=149154(0x246a2), param1=0(0), param2=0(0), param3=0(0)}==========>(Action indicates that the redirect to next hop which is the pointer 149152 which will show below)
+         policer=
+         statistics={stat id 496  slice = 8 idx=103 entries=1}{Packets}{Bytes}
+         Extended statistics=NULL
+
+BCM.0> l3 egress show
+Entry  Mac                 Vlan INTF PORT MOD MPLS_LABEL ToCpu Drop RefCount L3MC^@
+<Truncated>
+132775  d4:77:98:bb:d9:47 4062 12323     1    1        -1   no   no    1   no
+149154  00:00:03:10:0c:70    0    8     1t   0        -1   no   no    3   no=========================>(This is the next hop pointer which is pointed to tid 1 which is elba 1)
+149155  00:00:03:10:0c:70    0    8     7t   0        -1   no   no    1   no
+149156  00:00:03:10:0c:70    0    8     2t   0        -1   no   no    1   no
+149157  d4:77:98:bb:d9:47   35 12323    83    0        -1   no   no    1  yes
+165025  00:00:00:00:00:00 28674    1     0    0        -1   no  yes    1   no
+
+
+Egress rule and action are pointed in the below snippet
+
+BCM.0> fp show entry 0xfe
+EID 0x000000fe: gid=0x4,
+         slice=2, slice_idx=0x29, part =0 prio=0xd, flags=0x210602, Installed, Enabled
+              tcam: color_indep=1, 
+ StageEgress 
+ InPort =====================================(This is port number which we got the packet "port number 83" which is uplink port 1/1/51)
+    Offset0: 157 Width0: 8 
+    DATA=0x00000053 
+    MASK=0x000000ff 
+ InterfaceClassPort 
+    Offset0: 186 Width0: 8 
+    DATA=0x00000001 
+    MASK=0x00000001 
+         action={act=InnerVlanNew, param0=2048(0x800), param1=0(0), param2=0(0), param3=0(0)}=============(Action represents to add new inner vlan 2048 as this is network traffic and l2vni case before going to elba)
+         policer=
+         statistics={stat id 133  slice = 2 idx=64 entries=1}{Packets}{Bytes}
+         Extended statistics=NULL
+
+
+
+Ingress Rule for L3VNI
+
+
+:/home/admin# ovs-appctl tcam/read-entry -i 0x7f986d23fd00 -w
+Reading entry ID 0x7f986d23fd00
+Include hardware entries in output
+Entry ID: 0x7f986d23fd00
+  Group ID: 0x7f985b3f5900
+  Group Name: Ingress_Distributed_Services(DSSING)
+  Create time: Tue Oct 19 07:54:37 2021
+  Precedence: 13
+  Flags: 0x1000 ( )
+  Installed: true
+  Hardware Entry ID: 0x7f9851d866c0
+    Unit: 0
+    SDK handle: 0x281
+    HW precedence: 0xd
+  Installed: true
+
+Please take note of the SDK handle which will be used to check entry in BCM shell
+
+
+Ingress rule and action are pointed in the below snippet
+
+
+BCM.0> fp show entry 0x281
+EID 0x00000281: gid=0x3,
+ slice=3, slice_idx=0x5a, part=0, prio=0xd, flags=0x10602, Installed, Enabled, color_indep=1
+
+ Drop 
+    Part:0 Offset0: 159 Width0:   1 
+    DATA=0x00000000 
+    MASK=0x00000001 
+ IpType 
+    Part:0 Offset0: 92 Width0:   4 
+    Part:0 Offset1: 150 Width1:   1 
+    DATA=0x00000000 
+    MASK=0x0000000e 
+ InterfaceClassPort ======================>(This will indicate that the match is for the traffic coming from fabric side that means the ingress port 1/1/51 is uplink/network port)
+    Part:0 Offset0: 20 Width0:  12 
+    DATA=0x00000012 
+    MASK=0x00000012 
+ VxlanNetworkId =========================>(This will be the match for the L3 VNI which is 900003)
+    Part:0 Offset0:  0 Width0:  16 
+    Part:0 Offset1: 16 Width1:   4 
+    Part:0 Offset2: 36 Width2:   4 
+    DATA=0x000dbba3 
+    MASK=0x00ffffff 
+         action={act=RedirectTrunk, param0=1(0x1), param1=0(0), param2=0(0), param3=0(0)}============>(The action indicates that the tarffic will be pointed to Elba 1)
+         policer=
+         statistics={stat id 519  slice = 8 idx=98 entries=1}{Packets}{Bytes}
+         Extended statistics=NULL
+
+
+Since this is the L3  VNI which will not have any egress xlate action for adding the tag before sending the packet to the ELBA there will be no EFP rule hit for the L3VNI case the traffic is pointed to ELBA directly without any change
+
+
+
+Once the packet is back from elba 
+Trident3 removes the inner VLAN. L2 forwarding decision is performed on the packet for L2 VNI case
+Since this is a post routed packet in case of L3VNI, the packet is already in the destination VLAN Packet is sent out the appropriate port in L3 VNI case
+
+
+
+
+
+{"level":"info","ts":"2022-02-01T09:15:49.884389566Z","module":"pen-nmd","caller":"smartnic.go:99","pid":"693","msg":"Nothing to be updated in DSC object. Exiting..."}
+{"level":"info","ts":"2022-02-01T09:15:49.895049598Z","module":"pen-nmd","caller":"cmdif.go:223","pid":"693","msg":"CMDIF: Got nic watch event: {{TypeMeta:{Kind:DistributedServiceCard APIVersion:v1} ObjectMeta:{Name:0490.8100.2080 Tenant: Namespace: GenerationID:17 ResourceVersion:12942274 UUID:55556390-eb5f-4178-a2bf-b6bcaf5bf831 Labels:map[] CreationTime:{Timestamp:{Seconds:1638505878 Nanos:161301956 XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0}} ModTime:{Timestamp:{Seconds:1643707164 Nanos:610410037 XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0}} SelfLink:/configs/cluster/v1/distributedservicecards/0490.8100.2080} Spec:{Admit:true ID:DSS-0490.8100.2080 IPConfig:IPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\"  MgmtMode:network NetworkMode:oob MgmtVlan:0 Controllers:[192.168.71.158] RoutingConfig: DSCProfile:default Policer:\u003cnil\u003e FwlogPolicy:{Tenant:default Name:test-implicit XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0} EnableSecureBoot:false XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0} Status:{AdmissionPhase:admitted Conditions:[{Type:healthy Status:unknown LastTransitionTime:2022-02-01T09:19:24Z Reason:NIC health update not received since 2022-02-01T09:15:36Z Message: XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0}] SerialNum:FSJ21280021 PrimaryMAC:0490.8100.2080 IPConfig:IPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\"  SystemInfo:OsInfo:\u003cName:\"Linux\" KernelRelease:\"4.19.68-yocto-standard\" Processor:\"x86_64\" \u003e MemoryInfo:\u003cType:\"ddr\" \u003e  Interfaces:[] DSCVersion:1.29.T-10_09_0001-3 DSCSku:DSS-4825-6100 Host: AdmissionPhaseReason: VersionMismatch:false ControlPlaneStatus:{BGPStatus:[] LastUpdatedTime:1970-01-01T00:00:00Z Message: XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0} IsConnectedToPSM:true UnhealthyServices:[] NumMacAddress:24 InbandIPConfig: SecureBooted:true ALOMPresent:false PackageType:dss DSSInfo:HostName:\"CX10K-Support-2\" Version:\"DL.10.09.0002E-16-gaaa18d4972003\" DSMs:\u003cUnitID:1 MACAddress:\"0490.8100.20e0\" \u003e DSMs:\u003cUnitID:2 MACAddress:\"0490.8100.20f0\" \u003e  XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0} XXX_NoUnkeyedLiteral:{} XXX_unrecognized:[] XXX_sizecache:0}} type: update-event"}
+{"level":"info","ts":"2022-02-01T09:15:49.89513097Z","module":"pen-nmd","caller":"smartnic.go:73","pid":"693","msg":"SmartNIC update, mac: 0490.8100.2080, phase: admitted, mgmt mode: network"}
+{"level":"info","ts":"2022-02-01T09:15:49.89522551Z","module":"pen-nmd","caller":"smartnic.go:83","pid":"693","msg":"Current SmartNIC State: T:\u003cKind:\"DistributedServiceCard\" \u003e O:\u003cName:\"0490.8100.2080\" CreationTime:\u003cTime:\u003c\u003e \u003e ModTime:\u003cTime:\u003c\u003e \u003e \u003e Spec:\u003cID:\"DSS-0490.8100.2080\" IPConfig:\u003cIPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\" \u003e MgmtMode:\"NETWORK\" NetworkMode:\"OOB\" Controllers:\"192.168.71.158\" FwlogPolicy:\u003c\u003e \u003e Status:\u003cAdmissionPhase:\"admitted\" Conditions:\u003cType:\"healthy\" Status:\"true\" LastTransitionTime:\"2022-02-01T09:15:36Z\" \u003e IPConfig:\u003cIPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\" \u003e DSCVersion:\"1.29.T-10_09_0001-3\" ControlPlaneStatus:\u003cLastUpdatedTime:\"1970-01-01T00:00:00Z\" \u003e IsConnectedToPSM:true SecureBooted:true PackageType:\"dss\" DSSInfo:\u003cHostName:\"CX10K-Support-2\" Version:\"DL.10.09.0002E-16-gaaa18d4972003\" DSMs:\u003cUnitID:1 MACAddress:\"0490.8100.20e0\" \u003e DSMs:\u003cUnitID:2 MACAddress:\"0490.8100.20f0\" \u003e \u003e \u003e "}
+{"level":"info","ts":"2022-02-01T09:15:49.895366542Z","module":"pen-nmd","caller":"smartnic.go:84","pid":"693","msg":"Updated SmartNIC State: T:\u003cKind:\"DistributedServiceCard\" APIVersion:\"v1\" \u003e O:\u003cName:\"0490.8100.2080\" GenerationID:\"17\" ResourceVersion:\"12942274\" UUID:\"55556390-eb5f-4178-a2bf-b6bcaf5bf831\" CreationTime:\u003cTime:\u003cseconds:1638505878 nanos:161301956 \u003e \u003e ModTime:\u003cTime:\u003cseconds:1643707164 nanos:610410037 \u003e \u003e SelfLink:\"/configs/cluster/v1/distributedservicecards/0490.8100.2080\" \u003e Spec:\u003cAdmit:true ID:\"DSS-0490.8100.2080\" IPConfig:\u003cIPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\" \u003e MgmtMode:\"network\" NetworkMode:\"oob\" Controllers:\"192.168.71.158\" DSCProfile:\"default\" FwlogPolicy:\u003cTenant:\"default\" Name:\"test-implicit\" \u003e \u003e Status:\u003cAdmissionPhase:\"admitted\" Conditions:\u003cType:\"healthy\" Status:\"unknown\" LastTransitionTime:\"2022-02-01T09:19:24Z\" Reason:\"NIC health update not received since 2022-02-01T09:15:36Z\" \u003e SerialNum:\"FSJ21280021\" PrimaryMAC:\"0490.8100.2080\" IPConfig:\u003cIPAddress:\"192.168.69.237/22\" DefaultGW:\"192.168.68.1\" DNSServers:\"192.168.68.2\" \u003e SystemInfo:\u003cOsInfo:\u003cName:\"Linux\" KernelRelease:\"4.19.68-yocto-standard\" Processor:\"x86_64\" \u003e MemoryInfo:\u003cType:\"ddr\" \u003e \u003e DSCVersion:\"1.29.T-10_09_0001-3\" DSCSku:\"DSS-4825-6100\" ControlPlaneStatus:\u003cLastUpdatedTime:\"1970-01-01T00:00:00Z\" \u003e IsConnectedToPSM:true NumMacAddress:24 InbandIPConfig:\u003c\u003e SecureBooted:true PackageType:\"dss\" DSSInfo:\u003cHostName:\"CX10K-Support-2\" Version:\"DL.10.09.0002E-16-gaaa18d4972003\" DSMs:\u003cUnitID:1 MACAddress:\"0490.8100.20e0\" \u003e DSMs:\u003cUnitID:2 MACAddress:\"0490.8100.20f0\" \u003e \u003e \u003e "}
+{"level":"info","ts":"2022-02-01T09:15:49.895424736Z","module":"pen-nmd","caller":"smartnic.go:99","pid":"693","msg":"Nothing to be updated in DSC object. Exiting..."}
+
+
+
+

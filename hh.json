@@ -1,0 +1,27 @@
+{
+  "Security_policy": [
+    {
+      "name": "pypi_example_security_policy_1",
+      "rules": [
+        {
+          "name": "pypi_example_security_policy_1_rule_1",
+          "description": "rule1_sample",
+          "proto-ports": [
+            {
+              "protocol": "tcp",
+              "ports": "443,80"
+            }
+          ],
+          "action": "permit",
+          "from-ip-addresses": [
+            "192.168.0.1"
+          ],
+          "to-ip-addresses": [
+            "192.168.1.1"
+          ]
+        }
+      ],
+      "priority": ""
+    }
+  ]
+}

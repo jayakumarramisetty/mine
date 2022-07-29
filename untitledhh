@@ -1,0 +1,165 @@
+
+
+What does it mean for propagation pending
+
+
+The policy is not yet pushed to the dsm the reasons for that can be.
+
+The necessary objects are not mapped properly (ex.. Network object shld be mapped for the policy to be completely propagated)
+If you are using AFC for pushing the policy there could be mismatch between the network objects on psm and afc.(In case of AFC)
+netagent is having issues in pushing the config to elba
+
+Why is my policy not working as expected
+
+It could be the wrong source and destination prefix as the policy is bound to workload we should make sure the IPs are based on ingress and egress of respective workload/particular network.
+Make sure you choose the correct network object(vlan) while applying the policy to it
+Make sure you choose the right direction(ingress or egress) with respect to particular vlan and policy.
+Make sure you choose the correct app/protocol and port number while creating the policy
+
+Do I need to enable any additional configurations for VsX
+
+Yes we need to make sure that we do not add persona uplink for the ISL link between VSX peers
+
+Do we support virtual IP for PSM
+Not yet
+What is the upgrade order for CX10000
+. AFC(if present), PSM and CX10000 switches
+
+Can we change the default policy action
+
+Can we apply policy in a single direction for a vlan
+
+Yes, you apply policy in a single direction (ingress or egress)
+
+
+
+//Global config mapping the primary and secondary vlan//
+vlan 100
+private-vlan primary
+vlan 101
+private-vlan isolated primary-vlan 100
+
+//Host facing interface configured as regular trunk allowing both primary and secondary vlan//
+interface 1/1/2
+no shutdown
+persona access
+mtu 9198
+no routing
+vlan trunk native 1
+vlan trunk allowed 1,100-101
+
+//SVI config on primary with local proxy arp//
+# show running-config interface vlan 100
+interface vlan100
+ip address 10.6.203.2/24
+active-gateway ip mac 00:00:00:00:01:00
+active-gateway ip 10.6.203.1
+ip mtu 9198
+ip local-proxy-arp
+exit
+
+
+First we need to find the bus number of the DSC management interface.  The DSC loopback interface IP Address is set to 169.254.XX.1, where XX is the decimal PCI bus number of the management interface on the RHEL server.
+
+
+Run the following command to check the PCI bus number of the DSC management interface
+
+→ lshw -businfo -class network 
+
+
+[root@pod1-rhel-s6 ~]# lshw -businfo -class network
+Bus info          Device     Class          Description
+=======================================================
+pci@0000:14:00.0  enp20s0    network        DSC Ethernet Controller
+pci@0000:15:00.0  enp21s0    network        DSC Ethernet Controller
+pci@0000:16:00.0  enp22s0    network        DSC Management Controller
+pci@0000:5d:00.0  eno5       network        I350 Gigabit Network Connection
+pci@0000:5d:00.1  eno6       network        I350 Gigabit Network Connection
+pci@0000:5d:00.2  eno7       network        I350 Gigabit Network Connection
+pci@0000:5d:00.3  eno8       network        I350 Gigabit Network Connection
+
+
+Notice the PCI bus number shows “16”, which is in HEX.  So the decimal conversion is 22.  This number will be the 3rd octet of the DSC internal interface. 
+So the DSC internal interface IP Address is 169.254.22.1
+
+
+Execute the command → ifconfig enp22s0 169.254.22.2 netmask 255.255.255.0 <ENTER> to assign the .2 address to interface
+
+
+
+Run the command → export DSC_URL=http://169.254.22.1
+This will set the variable to the DSC internal interface IP Address
+Run the command → echo $DSC_URL
+Verify that the variable is set correctly and should show “http://169.254.22.1” 
+
+
+After this you can use penctl to verify the dsc
+
+======================
+
+Today DSS rules are highest priority and which we match on vlan inspite of anyother rules
+
+if we increase qulaifiers(SIP,DIP,SMAC,DMAC,PORT) the width of group increases, and consomes more hardware resources(5 slices per DSS group) and with today design it might decrease the scale and we cannot afford now it seems
+
+But not sure if we can do something at ingress of elba so that policy validation will not be done and sent back.
+
+oday it is not possible
+
+5 slices (DSS)
+
+
+Flows are redirected to Elba for stateful evaluation based on configuration pushed from PSM. 
+
+When a VLAN is configured in PSM as part of the Network object, AND if the VLAN is present in AOS-CX, then redirect rules are programmed in Trident3 to send flows in the VLAN to Elba for stateful evaluation.
+
+We will look at verifying the VLAN redirect programming in this presentation
+
+
+
+
+
+
+
+dss# start-shell 
+dss:~$ sudo su
+dss:/home/admin# ovs-appctl dssPD/show_vlan_filter
+
+================Service Filter's PD info==========================
+vlan_id   svc_lag  Tid  l2_vni     status          ifp_np_drop_entry  ifp_drop_entry     ifp_rd_ap_l2_entry ifp_rd_ap_l3_entry ifp_rd_np_entry    bitmap    
+399       lag521   3    -1         ADD_SUCCESS     (nil)              (nil)              0x7f7ba924ea00     0x7f7bc65c9200     (nil)              0x63        
+20        lag522   5    -1         ADD_SUCCESS     (nil)              (nil)              0x7f7ba9264800     0x7f7ba924fe00     (nil)              0x63        
+105       lag522   5    -1         ADD_SUCCESS     (nil)              (nil)              0x7f7ba9252b00     0x7f7ba9251200     (nil)              0x63        
+1054      lag522   5    -1         ADD_SUCCESS     (nil)              (nil)              0x7f7ba9265c00     0x7f7ba9239800     (nil)              0x63        
+42        lag522   5    -1         ADD_SUCCESS     (nil)              (nil)              0x7f7ba9252100     0x7f7ba9250800     (nil)              0x63        
+199       lag521   3    2001       ADD_SUCCESS     (nil)              (nil)              0x7f7ba924f400     0x7f7ba924ef00     0x7f7ba9264d00     0x5f        
+
+
+
+
+
+
+In the above output we can see the vlan mapped to either of the service lags (521/522) and we need to verify and make sure the status is ADD_SUCCESS
+
+
+
+The init_time_filter table programming is used to allocate internal VLAN identifiers to the front panel and virtual (LAG) ports. This is used when traffic is redirected to Elba for policy evaluation. 
+
+
+In the above output we can see the internal vlan add field which is the port identifier for normal front panel ports and internal identifier for lag ports.
+
+
+
+# ovs-appctl dssPD/clear_filter_stats
+# ovs-appctl dssPD/show_filter_stats
+TCAM Entry ID        Group                     Pkt-Count            Byte-Count          
+0x7f7ba977cc00       IFP-LOWPRI-NO-SVC_VLAN    12                   1104                
+0x7f7ba9690a00       Flow-sync IFP ISL->SVC1   8                    616                 
+0x7f7ba9690f00       Flow-sync IFP ISL->SVC2   8                    616                 
+0x7f7ba9691e00       Flow-sync IFP SVC->ISL-33   8                    616                 
+0x7f7ba9693700       Flow-sync IFP SVC->ISL-127  8                    616                 
+0x7f7ba9693c00       Flow-sync IFP ALLOW-ALL   32                   2464                
+0x7f7ba9694600       Flow-sync EFP             16                   1232                
+0x7f7bc4df8f00       IFP-AP-RD-L2-VLAN-   102  3                    318                 
+0x7f7be1dea700       IFP-SVC-MASK-PKT_RES-0    1                    68                  
+0x7f7bc65c6500       IFP-SVC-MASK-PKT_RES-6    17                   3394                
+

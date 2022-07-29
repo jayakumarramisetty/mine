@@ -1,0 +1,319 @@
+Current configuration:
+!
+!Version ArubaOS-CX DL.XX.XX.XXXX
+!export-password: default
+hostname CX10K-02
+user admin group administrators password ciphertext AQBapVla5NuuDldnh3jgXcH5ornhovCXKQRsccf8ZLFQIi8oYgAAAI4MR9K7tFj+1MuiChJjJWHkeYcba7AyZwcEqrJahxFgWgQ/C0F+xa4nw+yXlw1y/55zwADvxPyYJFeRFxZbmiAosHPxdr1UwND4OMxbkewkp5C2we8jEVeEfsR2E2y6dr6k
+router vrrp enable
+profile leaf
+vrf Demo-VRF-01
+vrf pod1
+    rd 65536:101
+    route-target export 65536:101 evpn
+    route-target import 65536:101 evpn
+    dsm 1/1
+vrf pod2
+    rd 65536:102
+    route-target export 65536:102 evpn
+    route-target import 65536:102 evpn
+    dsm 1/2
+vrf test
+cli-session
+    timeout 0
+!
+!
+!
+!
+!
+ssh server vrf mgmt
+psm
+    host 192.168.71.132 vrf mgmt
+dsm
+    workload-migration
+vlan 1
+vlan 21
+    private-vlan primary
+vlan 22,31-32,41-42,112,1234,2100
+evpn
+    arp-suppression
+    vlan 21
+        rd auto
+        route-target export auto
+        route-target import auto
+        redistribute host-route
+    vlan 22
+        rd auto
+        route-target export auto
+        route-target import auto
+        redistribute host-route
+    vlan 31
+        rd auto
+        route-target export auto
+        route-target import auto
+        redistribute host-route
+    vlan 32
+        rd auto
+        route-target export auto
+        route-target import auto
+        redistribute host-route
+interface mgmt
+    no shutdown
+    ip dhcp
+interface lag 1
+interface lag 111 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 112 multi-chassis
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface lag 256
+    no shutdown
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+    lacp mode active
+interface 1/1/1
+    no shutdown                                                
+    persona access
+    mtu 9198
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+interface 1/1/2
+    persona access
+    mtu 9198
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+interface 1/1/3
+    persona access
+    mtu 9198
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+interface 1/1/4
+    persona access
+    mtu 9198
+    no routing
+    vlan trunk native 1
+    vlan trunk allowed all
+interface 1/1/5
+    no shutdown
+    persona uplink
+    mtu 9198
+    ip mtu 9196
+    ip address 11.1.1.4/31
+    ip ospf 1 area 0.0.0.0
+interface 1/1/6
+    no shutdown
+interface 1/1/7
+    no shutdown
+interface 1/1/8
+    no shutdown
+interface 1/1/9
+    no shutdown
+interface 1/1/10
+    no shutdown
+interface 1/1/11
+    no shutdown
+interface 1/1/12
+    no shutdown
+interface 1/1/13
+    no shutdown
+interface 1/1/14
+    no shutdown
+interface 1/1/15
+    no shutdown
+interface 1/1/16
+    no shutdown
+interface 1/1/17
+    no shutdown
+interface 1/1/18
+    no shutdown
+interface 1/1/19
+    no shutdown
+interface 1/1/20
+    no shutdown
+interface 1/1/21
+    no shutdown
+interface 1/1/22
+    no shutdown
+interface 1/1/23
+    no shutdown
+interface 1/1/24
+    no shutdown
+interface 1/1/25
+    no shutdown
+interface 1/1/26
+    no shutdown
+interface 1/1/27
+    no shutdown
+interface 1/1/28
+    no shutdown
+interface 1/1/29
+    no shutdown
+interface 1/1/30
+    no shutdown
+interface 1/1/31                                               
+    no shutdown
+interface 1/1/32
+    no shutdown
+interface 1/1/33
+    no shutdown
+interface 1/1/34
+    no shutdown
+interface 1/1/35
+    no shutdown
+interface 1/1/36
+    no shutdown
+interface 1/1/37
+    no shutdown
+interface 1/1/38
+    no shutdown
+interface 1/1/39
+    no shutdown
+interface 1/1/40
+    no shutdown
+interface 1/1/41
+    no shutdown
+interface 1/1/42
+    no shutdown
+interface 1/1/43
+    no shutdown
+interface 1/1/44
+    no shutdown
+interface 1/1/45
+    no shutdown
+interface 1/1/46
+    no shutdown
+interface 1/1/47
+    no shutdown
+interface 1/1/48
+    no shutdown
+interface 1/1/49
+    no shutdown
+    mtu 9198
+    lag 256
+interface 1/1/50
+    no shutdown
+    mtu 9198
+    lag 256
+interface 1/1/51
+    no shutdown
+    persona uplink
+    mtu 9198
+    ip mtu 9196
+    ip address 11.1.1.6/31
+    ip ospf 1 area 0.0.0.0
+interface 1/1/52
+    no shutdown
+    persona uplink
+interface 1/1/53
+    no shutdown
+    persona uplink
+interface 1/1/54
+    no shutdown
+    persona uplink
+interface loopback 0
+    ip address 21.1.1.2/32
+    ip ospf 1 area 0.0.0.0
+interface loopback 2
+    description vtep source
+    ip address 2.2.2.2/32
+    ip ospf 1 area 0.0.0.0
+interface vlan 21
+    vsx-sync active-gateways
+    vrf attach pod1
+    ip mtu 9196
+    ip address 10.29.21.2/24
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.21.1
+interface vlan 22
+    vsx-sync active-gateways
+    vrf attach pod1
+    ip mtu 9100
+    ip address 10.29.22.2/24
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.22.1
+interface vlan 31                                              
+    vrf attach pod2
+    ip mtu 9196
+    ip address 10.29.31.2/24
+    active-gateway ip mac 12:02:00:00:01:01
+    active-gateway ip 10.29.31.1
+interface vlan 41
+    vrf attach Demo-VRF-01
+    ip address 1.1.41.2/24
+    vrrp 41 address-family ipv4
+        address 1.1.41.1 primary
+        no shutdown
+        exit
+interface vlan 42
+    vrf attach Demo-VRF-01
+    ip address 1.1.42.2/24
+    vrrp 42 address-family ipv4
+        address 1.1.42.1 primary
+        no shutdown
+        exit
+interface vlan 112
+    ip mtu 9196
+    ip address 11.11.11.1/31
+    ip ospf 1 area 0.0.0.0
+interface vxlan 1
+    source ip 2.2.2.2
+    no shutdown
+    vni 11001
+        vrf pod1 
+        routing
+    vni 11002
+        vrf pod2 
+        routing
+    vni 11021
+        vlan 21
+    vni 11022
+        vlan 22
+    vni 11031
+        vlan 31
+    vni 11032
+        vlan 32
+ip route 10.29.31.0/24 vlan31 vrf pod1
+ip route 10.29.21.0/24 vlan21 vrf pod2
+!
+!
+!
+!
+!
+router ospf 1
+    router-id 21.1.1.2
+    area 0.0.0.0
+router bgp 65536
+    bgp router-id 21.1.1.2
+    maximum-paths 8
+    bgp log-neighbor-changes
+    bgp bestpath as-path multipath-relax
+    neighbor spine-RR peer-group
+    neighbor spine-RR remote-as 65536
+    neighbor spine-RR description Spine and RR peer-group
+    neighbor spine-RR fall-over
+    neighbor spine-RR update-source loopback 0
+    neighbor 21.1.1.3 peer-group spine-RR
+    neighbor 21.1.1.4 peer-group spine-RR
+    address-family ipv4 unicast
+        redistribute connected
+    exit-address-family
+    address-family l2vpn evpn
+        neighbor spine-RR send-community extended
+        neighbor 21.1.1.3 activate
+        neighbor 21.1.1.3 next-hop-self
+        neighbor 21.1.1.4 activate
+        neighbor 21.1.1.4 next-hop-self
+    exit-address-family
+!
+ip source-interface workload_migration interface vlan112
+https-server vrf mgmt
