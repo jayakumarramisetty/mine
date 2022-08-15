@@ -79,6 +79,26 @@ def config_interface_noshut_primary(interfnum):
         ssh.send_command_timing('interface ' + interfnum)
         ssh.send_command_timing('no shutdown')
         ssh.disconnect()
+
+def config_interface_shut_secondary(interfnum):
+        router_ip = "192.168.69.237"
+        r_username = "admin"
+        r_password = "Pensando!2345"
+        ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
+        ssh.config_mode(config_command='configure term')
+        ssh.send_command_timing('interface ' + interfnum)
+        ssh.send_command_timing('shutdown')
+        ssh.disconnect()
+
+def config_interface_noshut_secondary(interfnum):
+        router_ip = "192.168.69.237"
+        r_username = "admin"
+        r_password = "Pensando!2345"
+        ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
+        ssh.config_mode(config_command='configure term')
+        ssh.send_command_timing('interface ' + interfnum)
+        ssh.send_command_timing('no shutdown')
+        ssh.disconnect()
         
 def parse_flow_table(text, table_no):
     flows = []
@@ -114,10 +134,17 @@ def parse_flows(flows):
 
 
 class vrf_config_change_standalone(aetest.Testcase):
-
+        @aetest.test
+        def make_standalone(self):
+            config_interface_shut_secondary("lag 111")
+            print("leg on secondary is down")
+            time.sleep(10)
+            config_interface_shut_primary("lag 256")
+            print("ISL IS down")
+            time.sleep(10)
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -349,7 +376,7 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -374,6 +401,15 @@ class vrf_config_change_standalone(aetest.Testcase):
                 if err:
                     print(err)
 
+        @aetest.test
+        def make_vsx_pair_with_sync(self):
+            config_interface_noshut_secondary("lag 111")
+            print("leg on secondary is up")
+            time.sleep(10)
+            config_interface_noshut_primary("lag 256")
+            print("ISL IS up")
+            time.sleep(10)
+
             print("=>"*100)
             print("waiting for 100 sec timeout")
             time.sleep(100)
@@ -392,6 +428,10 @@ class verify_vsx_oper_status(aetest.Testcase):
             ssh = netmiko.ConnectHandler(
     **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show vsx status | i VSX")
+            time.sleep(10)
+            cli_output2 = ssh.send_command("show vsx status")
+            print(cli_output2)
+            time.sleep(10)
             print("configuring vsx sync dsm")
             config_vsx_dsm("dsm")
             re_vsx= re.search("VSX.*", cli_output1)
@@ -408,7 +448,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -645,7 +685,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -674,13 +714,16 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
             print("waiting for 100 sec timeout")
             time.sleep(100)
             print("=>"*100)
+            config_interface_shut_secondary("lag 111")
+            print("Leg on secondary is down")
+            time.sleep(10)
 
 class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -912,7 +955,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -940,13 +983,20 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
             print("waiting for 100 sec timeout")
             time.sleep(100)
             print("=>"*100)
+            config_interface_noshut_secondary("lag 111")
+            print("Leg on secondary up")
+            time.sleep(10)
+            config_interface_shut_primary("lag 111")
+            print("Leg on primary down")
+            time.sleep(10)
+
 
 class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -1062,8 +1112,8 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                         cli_output_flow_post_change = ssh.send_command("pdsctl show flow")
                         tcp_count_post, udp_count_post, icmp_count_post, others_count_post = parse_flows(cli_output_flow_post_change)
                         ssh.send_command("exit",expect_string="$")
-                        assert udp_count_pre != udp_count_post, print("UDP flows count not matching : \n Pre: " + str(udp_count_pre) + "\n Post: " + str(udp_count_post))
-                        assert icmp_count_pre != icmp_count_post, print("ICMP flows count not matching : \n Pre: " + str(icmp_count_pre) + "\n Post: " + str(icmp_count_post))
+                        assert udp_count_pre == udp_count_post, print("UDP flows count not matching : \n Pre: " + str(udp_count_pre) + "\n Post: " + str(udp_count_post))
+                        assert icmp_count_pre == icmp_count_post, print("ICMP flows count not matching : \n Pre: " + str(icmp_count_pre) + "\n Post: " + str(icmp_count_post))
                         assert others_count_pre == others_count_post, print("Other flows count not matching : \n Pre: " + str(others_count_pre) + "\n Post: " + str(others_count_post))
                         print("FLows in vrf pod1 match before and after change to DSM mapping")
                         print("UDP flows count : \n Pre: "+str(udp_count_pre)+ "\n Post: " + str(udp_count_post))
@@ -1090,8 +1140,8 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                         cli_output_flow_post_change = ssh.send_command("pdsctl show flow")
                         tcp_count_post, udp_count_post, icmp_count_post, others_count_post = parse_flows(cli_output_flow_post_change)
                         ssh.send_command("exit",expect_string="$")
-                        assert udp_count_pre != udp_count_post, print("UDP flows count not matching : \n Pre: " + str(udp_count_pre) + "\n Post: " + str(udp_count_post))
-                        assert icmp_count_pre != icmp_count_post, print("ICMP flows count not matching : \n Pre: " + str(icmp_count_pre) + "\n Post: " + str(icmp_count_post))
+                        assert udp_count_pre == udp_count_post, print("UDP flows count not matching : \n Pre: " + str(udp_count_pre) + "\n Post: " + str(udp_count_post))
+                        assert icmp_count_pre == icmp_count_post, print("ICMP flows count not matching : \n Pre: " + str(icmp_count_pre) + "\n Post: " + str(icmp_count_post))
                         assert others_count_pre == others_count_post, print("Other flows count not matching : \n Pre: " + str(others_count_pre) + "\n Post: " + str(others_count_post))
                         print("FLows in vrf pod1 match before and after change to DSM mapping")
                         print("UDP flows count : \n Pre: "+str(udp_count_pre)+ "\n Post: " + str(udp_count_post))
@@ -1177,7 +1227,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -1201,13 +1251,20 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                 err = stderr.read().decode()
                 if err:
                     print(err)
+            print("=>"*100)
+            print("waiting for 100 sec timeout")
+            time.sleep(100)
+            print("=>"*100)
+            config_interface_noshut_primary("lag 111")
+            print("Leg on primary up")
+            time.sleep(10)
 
 class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
@@ -1520,7 +1577,7 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.68.191'
+            host_ip = '192.168.71.107'
             username = 'root'
             passwd = 'docker'
 
