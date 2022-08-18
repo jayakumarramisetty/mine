@@ -14,6 +14,20 @@ sys.path.append(os.environ['PEN_SYSTEST'])
 sys.path.append(os.environ['PEN_SYSTEST'] + '/lib/protoc_libs')
 sys.path.append(os.environ['PEN_SYSTEST'] + '/lib/protoc_libs/operd')
 
+import yaml
+input = '''
+swi_ip_stdln: ["192.168.68.128"]
+swi_ip_vsx: ["192.168.68.128", "192.168.69.237"]
+swi_usr: "admin"
+swi_pwd: "Pensando!2345"
+iperf_ip: ["192.168.71.107", "192.168.70.178"]
+iperf_usr: "root"
+iperf_pwd: "docker"
+t_vrf: "pod1"
+'''
+
+input = yaml.safe_load(input)
+vrf_name = input['t_vrf']
 
 def vrf_list(vrf):
     vrf_list = re.split(": |, |\s", vrf)
@@ -21,9 +35,9 @@ def vrf_list(vrf):
     return(vrf_list)
 
 def config_change_vrf_primary(vrf,dsm):
-        router_ip = "192.168.68.128"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][0]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('vrf ' + vrf)
@@ -31,9 +45,9 @@ def config_change_vrf_primary(vrf,dsm):
         ssh.disconnect()
 
 def config_change_vrf_secondary(vrf,dsm):
-        router_ip = "192.168.69.237"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][1]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('vrf ' + vrf)
@@ -41,9 +55,9 @@ def config_change_vrf_secondary(vrf,dsm):
         ssh.disconnect()
 
 def config_vsx_dsm(command):
-        router_ip = "192.168.68.128"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][0]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('vsx ')
@@ -51,9 +65,9 @@ def config_vsx_dsm(command):
         ssh.disconnect()
 
 def config_vsx_no_dsm(nocommand):
-        router_ip = "192.168.68.128"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][0]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('vsx ')
@@ -61,9 +75,9 @@ def config_vsx_no_dsm(nocommand):
         ssh.disconnect()
 
 def config_interface_shut_primary(interfnum):
-        router_ip = "192.168.68.128"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][0]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('interface ' + interfnum)
@@ -71,9 +85,9 @@ def config_interface_shut_primary(interfnum):
         ssh.disconnect()
 
 def config_interface_noshut_primary(interfnum):
-        router_ip = "192.168.68.128"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][0]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('interface ' + interfnum)
@@ -81,9 +95,9 @@ def config_interface_noshut_primary(interfnum):
         ssh.disconnect()
 
 def config_interface_shut_secondary(interfnum):
-        router_ip = "192.168.69.237"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][1]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('interface ' + interfnum)
@@ -91,9 +105,9 @@ def config_interface_shut_secondary(interfnum):
         ssh.disconnect()
 
 def config_interface_noshut_secondary(interfnum):
-        router_ip = "192.168.69.237"
-        r_username = "admin"
-        r_password = "Pensando!2345"
+        router_ip = input['swi_ip_vsx'][1]
+        r_username = input['swi_usr']
+        r_password = input['swi_pwd']
         ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
         ssh.config_mode(config_command='configure term')
         ssh.send_command_timing('interface ' + interfnum)
@@ -144,9 +158,9 @@ class vrf_config_change_standalone(aetest.Testcase):
             time.sleep(10)
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
             "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
@@ -177,9 +191,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def iperf_client_start(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
             "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
@@ -209,9 +223,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln']
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -221,9 +235,9 @@ class vrf_config_change_standalone(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_pretest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln']
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -235,9 +249,9 @@ class vrf_config_change_standalone(aetest.Testcase):
   
         @aetest.test 
         def vrf_config_change_standalone(self):
-            router_ip = "192.168.68.128"
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln'][0]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             ssh = netmiko.ConnectHandler(
                **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -250,14 +264,14 @@ class vrf_config_change_standalone(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
                         tcp_count_pre, udp_count_pre, icmp_count_pre, others_count_pre = parse_flows(cli_output_flow_pre_change)
                         ssh.send_command("exit",expect_string="$")
                         print("VRF pod1 mapped to DSM1, changing to DSM2")
-                        config_change_vrf_primary("pod1", "1/2")
+                        config_change_vrf_primary(vrf_name, "1/2")
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
@@ -275,14 +289,14 @@ class vrf_config_change_standalone(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
                         tcp_count_pre, udp_count_pre, icmp_count_pre, others_count_pre = parse_flows(cli_output_flow_pre_change)
                         ssh.send_command("exit",expect_string="$")
                         print("VRF pod1 mapped to DSM2, changing to DSM1")
-                        config_change_vrf_primary("pod1", "1/1")
+                        config_change_vrf_primary(vrf_name, "1/1")
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
@@ -305,9 +319,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def get_elba_posttest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln']
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -317,9 +331,9 @@ class vrf_config_change_standalone(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_posttest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln']
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -330,9 +344,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def get_show_output(self):
-            router_ip = ["192.168.68.128"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_stdln']
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
            
@@ -347,9 +361,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def iperf_client_stop(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
@@ -376,9 +390,9 @@ class vrf_config_change_standalone(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
@@ -422,9 +436,9 @@ class verify_vsx_oper_status(aetest.Testcase):
 
         @aetest.test 
         def vrf_status_verify(self):
-            router_ip = "192.168.68.128"
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_vsx'][0]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             ssh = netmiko.ConnectHandler(
     **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show vsx status | i VSX")
@@ -448,9 +462,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
             "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
@@ -481,9 +495,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_client_start(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
             "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
@@ -513,9 +527,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -525,9 +539,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_pretest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -538,9 +552,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
   
         @aetest.test 
         def vrf_cli_flow_test_vsx_sync(self):
-            router_ip = "192.168.68.128"
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = input['swi_ip_vsx'][0]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             ssh = netmiko.ConnectHandler(
                **{'device_type': 'hp_procurve', 'ip': router_ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -553,7 +567,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -562,7 +576,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                         #print("configuring vsx sync dsm")
                         #config_vsx_dsm("dsm")
                         print("VRF pod1 mapped to DSM1, changing to DSM2")
-                        config_change_vrf_primary("pod1", "1/2")
+                        config_change_vrf_primary(vrf_name, "1/2")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -581,7 +595,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -590,7 +604,7 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                         #print("configuring vsx sync dsm")
                         #config_vsx_dsm("dsm")
                         print("VRF pod1 mapped to DSM2, changing to DSM1")
-                        config_change_vrf_primary("pod1", "1/1")
+                        config_change_vrf_primary(vrf_name, "1/1")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -614,9 +628,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def get_elba_posttest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -626,9 +640,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_posttest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -639,9 +653,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def get_show_output(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
            
@@ -656,9 +670,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_client_stop(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["killall iperf" ,"pkill -9 iperf",
             "ps -aux | grep iperf"]
@@ -685,9 +699,9 @@ class vrf_clitest_vsx_withsync(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
@@ -723,9 +737,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
             "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
@@ -756,9 +770,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def iperf_client_start(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
             "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
@@ -782,9 +796,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -794,9 +808,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_pretest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -807,9 +821,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
   
         @aetest.test 
         def vrf_cli_flow_test_vsx_withoutsync_primary(self):
-           router_ip = ["192.168.68.128"]
-           r_username = "admin"
-           r_password = "Pensando!2345"
+           router_ip = [input['swi_ip_vsx'][0]]
+           r_username = input['swi_usr']
+           r_password = input['swi_pwd']
            for ip in router_ip:
             ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -822,7 +836,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -831,7 +845,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                         print("unconfiguring vsx sync dsm")
                         config_vsx_no_dsm("dsm")
                         print("VRF pod1 mapped to DSM1, changing to DSM2")
-                        config_change_vrf_primary("pod1", "1/2")
+                        config_change_vrf_primary(vrf_name, "1/2")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -850,7 +864,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -859,7 +873,7 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                         print("unconfiguring vsx sync dsm")
                         config_vsx_no_dsm("dsm")
                         print("VRF pod1 mapped to DSM2, changing to DSM1")
-                        config_change_vrf_primary("pod1", "1/1")
+                        config_change_vrf_primary(vrf_name, "1/1")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -884,9 +898,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def get_elba_posttest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -896,9 +910,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_posttest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -909,9 +923,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def get_show_output(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
            
@@ -926,9 +940,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def iperf_client_stop(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
@@ -955,9 +969,9 @@ class vrf_clitest_vsx_withoutsync_primary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
@@ -996,9 +1010,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
             "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
@@ -1029,9 +1043,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def iperf_client_start(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
             "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
@@ -1055,9 +1069,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1067,9 +1081,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_pretest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1080,9 +1094,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
   
         @aetest.test 
         def vrf_cli_flow_test_vsx_withoutsync_secondary(self):
-           router_ip = ["192.168.69.237"]
-           r_username = "admin"
-           r_password = "Pensando!2345"
+           router_ip = [input['swi_ip_vsx'][1]]
+           r_username = input['swi_usr']
+           r_password = input['swi_pwd']
            for ip in router_ip:
             ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -1095,7 +1109,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1104,7 +1118,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                        #print("unconfiguring vsx sync dsm")
                        #config_vsx_no_dsm("dsm")
                         print("VRF pod1 mapped to DSM1, changing to DSM2")
-                        config_change_vrf_secondary("pod1", "1/2")
+                        config_change_vrf_secondary(vrf_name, "1/2")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -1123,7 +1137,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1132,7 +1146,7 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                        #print("unconfiguring vsx sync dsm")
                        #config_vsx_no_dsm("dsm")
                         print("VRF pod1 mapped to DSM2, changing to DSM1")
-                        config_change_vrf_secondary("pod1", "1/1")
+                        config_change_vrf_secondary(vrf_name, "1/1")
                        
                         time.sleep(60)
                         ssh.send_command("diag", expect_string="#")
@@ -1156,9 +1170,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def get_elba_posttest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1168,9 +1182,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_posttest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1181,9 +1195,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def get_show_output(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
            
@@ -1198,9 +1212,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def iperf_client_stop(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
@@ -1227,9 +1241,9 @@ class vrf_clitest_vsx_withoutsync_secondary(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
@@ -1264,9 +1278,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def iperf_server_start(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["nohup iperf -s -i1  > test_tcp_iperf.log 2>&1 &", 
             "nohup iperf -s -i1 -u  > test_udp_iperf.log 2>&1 &", 
@@ -1297,9 +1311,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def iperf_client_start(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["nohup iperf -c 10.29.21.60 -i1 -t800  > test_tcp_iperf.log 2>&1 &" ,
             "nohup iperf -c 10.29.21.60 -i1 -u -t800 > test_udp_iperf.log 2>&1 &", "ps -aux | grep iperf"]
@@ -1323,9 +1337,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def get_elba_pretest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1335,9 +1349,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_pretest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1348,9 +1362,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
   
         @aetest.test 
         def vrf_cli_ztraffic_test(self):
-           router_ip = ["192.168.69.237"]
-           r_username = "admin"
-           r_password = "Pensando!2345"
+           router_ip = [input['swi_ip_vsx'][1]]
+           r_username = input['swi_usr']
+           r_password = input['swi_pwd']
            for ip in router_ip:
             ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -1363,7 +1377,7 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1392,7 +1406,7 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1427,9 +1441,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def vrf_cli_ISL_FLAP_test(self):
-           router_ip = ["192.168.69.237"]
-           r_username = "admin"
-           r_password = "Pensando!2345"
+           router_ip = [input['swi_ip_vsx'][1]]
+           r_username = input['swi_usr']
+           r_password = input['swi_pwd']
            for ip in router_ip:
             ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
             cli_output1 = ssh.send_command("show dsm 1/1 vrf")
@@ -1442,7 +1456,7 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                vrfs_temp = test_vrf1.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/1", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1471,7 +1485,7 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                vrfs_temp = test_vrf2.group()
                vrf1 = vrf_list(vrfs_temp)
                print(vrf1)
-               if "pod1" in vrf1:
+               if vrf_name in vrf1:
                         ssh.send_command("diag", expect_string="#")
                         ssh.send_command("diag dsm console 1/2", expect_string="$")
                         cli_output_flow_pre_change = ssh.send_command("pdsctl show flow")
@@ -1506,9 +1520,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def get_elba_posttest_flow_output_elba1(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1518,9 +1532,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
                 ssh.disconnect()
         @aetest.test
         def get_elba_posttest_flow_output_elba2(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
                 ssh.send_command("diag", expect_string="#")
@@ -1531,9 +1545,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def get_show_output(self):
-            router_ip = ["192.168.68.128", "192.168.69.237"]
-            r_username = "admin"
-            r_password = "Pensando!2345"
+            router_ip = [input['swi_ip_vsx'][0], input['swi_ip_vsx'][1]]
+            r_username = input['swi_usr']
+            r_password = input['swi_pwd']
             for ip in router_ip:
                 ssh = netmiko.ConnectHandler(**{'device_type': 'hp_procurve', 'ip': ip, 'username': r_username, 'password': r_password})
            
@@ -1548,9 +1562,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def iperf_client_stop(self):
-            host_ip = '192.168.70.178'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][1]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands1 = ["killall iperf" , "pkill -9 iperf",
             "ps -aux | grep iperf"]
@@ -1577,9 +1591,9 @@ class vrf_clitest_vsx_interfaceflaps(aetest.Testcase):
 
         @aetest.test
         def iperf_server_stop(self):
-            host_ip = '192.168.71.107'
-            username = 'root'
-            passwd = 'docker'
+            host_ip = input['iperf_ip'][0]
+            username = input['iperf_usr']
+            passwd = input['iperf_pwd']
 
             commands = ["killall iperf", "pkill -9 iperf",
             "killall ping", 
